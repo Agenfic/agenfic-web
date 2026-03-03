@@ -204,6 +204,7 @@ body {
   background: transparent;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+  overflow: visible;
 }
 
 .header.hidden {
@@ -220,6 +221,10 @@ body {
 .anthropic-banner-frame-wrap {
   width: 100%;
   height: 84px;
+  overflow: visible;
+  position: relative;
+  z-index: 80;
+  pointer-events: auto;
 }
 
 .anthropic-banner-frame {
@@ -228,6 +233,10 @@ body {
   height: 84px;
   border: 0;
   background: transparent;
+  overflow: visible;
+  position: relative;
+  z-index: 80;
+  pointer-events: auto;
 }
 
 .nav_wrap {

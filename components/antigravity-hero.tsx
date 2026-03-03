@@ -45,10 +45,20 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
         margin: 0;
         padding: 0;
         background: transparent;
-        overflow: hidden;
+        overflow: visible;
+      }
+      .nav_wrap,
+      .nav_contain,
+      .nav_contain.u-container,
+      .nav_desktop_layout,
+      .nav_links_component,
+      .nav_links_wrap {
+        background: transparent !important;
       }
       .nav_wrap {
         position: relative !important;
+        box-shadow: none !important;
+        border: 0 !important;
       }
       .nav_wrap.is-desktop {
         display: block !important;
@@ -69,7 +79,7 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
         height: 84px !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: flex-start !important;
+        justify-content: space-between !important;
         gap: 16px !important;
       }
       .nav_desktop_layout {
@@ -85,8 +95,29 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
         align-items: center !important;
         gap: 0 !important;
       }
-      .nav_actions_wrap.w-list-unstyled.is-desktop {
-        display: none !important;
+      .nav_dropdown_component.w-dropdown {
+        position: relative !important;
+      }
+      .nav_dropdown_main_wrap.is-desktop {
+        z-index: 9999 !important;
+      }
+      .nav_dropdown_main_content.is-desktop {
+        pointer-events: auto !important;
+      }
+      .nav_logo_lottie {
+        display: inline-flex !important;
+        align-items: center !important;
+      }
+      .nav_logo_wordmark {
+        display: inline-flex !important;
+        align-items: center !important;
+        min-height: 16px !important;
+        font-size: 18px !important;
+        line-height: 1 !important;
+        letter-spacing: -0.02em !important;
+        font-weight: 500 !important;
+        color: #181818 !important;
+        font-family: inherit !important;
       }
     </style>
   </head>
@@ -94,27 +125,77 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
     ${ANTHROPIC_BANNER_DESKTOP_HTML}
     <script>
       (() => {
-        const wordmark = ${JSON.stringify(ANTHROPIC_WORDMARK_SVG)};
+        // frameElement comes from the parent browsing context, so instanceof checks can fail across realms.
+        const frameElement =
+          window.frameElement && window.frameElement.tagName === "IFRAME" ? window.frameElement : null;
+        const frameWrapElement = frameElement ? frameElement.parentElement : null;
+        const BASE_FRAME_HEIGHT = 84;
+        const MAX_FRAME_HEIGHT = 760;
+        const PANEL_PADDING = 20;
+        const CLOSE_DELAY_MS = 120;
+        const closeTimers = new WeakMap();
+
+        const setFrameHeight = (value) => {
+          const nextHeight = Math.max(BASE_FRAME_HEIGHT, Math.min(MAX_FRAME_HEIGHT, Math.ceil(value)));
+          if (frameElement) {
+            frameElement.style.height = nextHeight + "px";
+          }
+          if (frameWrapElement) {
+            frameWrapElement.style.height = nextHeight + "px";
+          }
+        };
+
+        const syncFrameHeight = () => {
+          const openPanels = Array.from(document.querySelectorAll(".w-dropdown-list.w--open"));
+          if (openPanels.length === 0) {
+            setFrameHeight(BASE_FRAME_HEIGHT);
+            return;
+          }
+          let neededHeight = BASE_FRAME_HEIGHT;
+          openPanels.forEach((panel) => {
+            const rect = panel.getBoundingClientRect();
+            neededHeight = Math.max(neededHeight, rect.bottom + PANEL_PADDING);
+          });
+          setFrameHeight(neededHeight);
+        };
+
         const logo = document.querySelector(".nav_logo_lottie");
-        if (logo && !logo.querySelector("svg")) {
-          logo.innerHTML = wordmark;
-        }
-        const navActions = document.querySelector(".nav_actions_wrap.w-list-unstyled.is-desktop");
-        if (navActions) {
-          navActions.remove();
+        if (logo) {
+          logo.innerHTML = '<span class="nav_logo_wordmark">Ancritheon</span>';
         }
 
         const dropdowns = Array.from(document.querySelectorAll(".nav_dropdown_component.w-dropdown"));
-        const closeDropdown = (dropdown) => {
+        const clearCloseTimer = (dropdown) => {
+          const timer = closeTimers.get(dropdown);
+          if (timer) {
+            window.clearTimeout(timer);
+            closeTimers.delete(dropdown);
+          }
+        };
+
+        const setDropdownOpenState = (dropdown, open) => {
           const toggle = dropdown.querySelector(".w-dropdown-toggle");
           const panel = dropdown.querySelector(".w-dropdown-list");
+          dropdown.classList.toggle("w--open", open);
+          dropdown.classList.toggle("open", open);
           if (toggle) {
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.classList.remove("w--open");
+            toggle.setAttribute("aria-expanded", open ? "true" : "false");
+            toggle.classList.toggle("w--open", open);
           }
           if (panel) {
-            panel.classList.remove("w--open");
+            panel.classList.toggle("w--open", open);
+            panel.classList.toggle("open", open);
           }
+        };
+
+        const closeDropdown = (dropdown) => {
+          clearCloseTimer(dropdown);
+          const toggle = dropdown.querySelector(".w-dropdown-toggle");
+          setDropdownOpenState(dropdown, false);
+          if (toggle) {
+            toggle.setAttribute("aria-expanded", "false");
+          }
+          requestAnimationFrame(syncFrameHeight);
         };
 
         const closeAll = (except) => {
@@ -126,17 +207,57 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
         };
 
         const openDropdown = (dropdown) => {
+          clearCloseTimer(dropdown);
           closeAll(dropdown);
+          // Expand early so pointer can enter the menu without crossing a clipped iframe edge.
+          setFrameHeight(MAX_FRAME_HEIGHT);
+          setDropdownOpenState(dropdown, true);
+          requestAnimationFrame(syncFrameHeight);
+        };
+
+        const scheduleClose = (dropdown) => {
+          clearCloseTimer(dropdown);
+          const timer = window.setTimeout(() => {
+            setDropdownOpenState(dropdown, false);
+            syncFrameHeight();
+            closeTimers.delete(dropdown);
+          }, CLOSE_DELAY_MS);
+          closeTimers.set(dropdown, timer);
+        };
+
+        const isDropdownOpen = (dropdown) => {
           const toggle = dropdown.querySelector(".w-dropdown-toggle");
-          const panel = dropdown.querySelector(".w-dropdown-list");
-          if (toggle) {
-            toggle.setAttribute("aria-expanded", "true");
-            toggle.classList.add("w--open");
-          }
-          if (panel) {
-            panel.classList.add("w--open");
+          return toggle ? toggle.getAttribute("aria-expanded") === "true" : dropdown.classList.contains("w--open");
+        };
+
+        const maybeCloseAll = () => {
+          const hasOpen = dropdowns.some((dropdown) => isDropdownOpen(dropdown));
+          if (!hasOpen) {
+            syncFrameHeight();
           }
         };
+
+        const closeAllWithSync = () => {
+          closeAll();
+          requestAnimationFrame(syncFrameHeight);
+        };
+
+        const onEscape = (event) => {
+          if (event.key !== "Escape") {
+            return;
+          }
+          closeAllWithSync();
+        };
+
+        document.addEventListener("keydown", onEscape);
+
+        dropdowns.forEach((dropdown) => {
+          const panel = dropdown.querySelector(".w-dropdown-list");
+          if (panel) {
+            panel.addEventListener("mouseenter", () => clearCloseTimer(dropdown));
+            panel.addEventListener("mouseleave", () => scheduleClose(dropdown));
+          }
+        });
 
         dropdowns.forEach((dropdown) => {
           const toggle = dropdown.querySelector(".w-dropdown-toggle");
@@ -153,14 +274,18 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
           toggle.setAttribute("aria-expanded", "false");
 
           dropdown.addEventListener("mouseenter", () => openDropdown(dropdown));
-          dropdown.addEventListener("mouseleave", () => closeDropdown(dropdown));
+          dropdown.addEventListener("mouseleave", () => {
+            scheduleClose(dropdown);
+            maybeCloseAll();
+          });
           dropdown.addEventListener("focusin", () => openDropdown(dropdown));
           dropdown.addEventListener("focusout", (event) => {
             const next = event.relatedTarget;
             if (next && dropdown.contains(next)) {
               return;
             }
-            closeDropdown(dropdown);
+            scheduleClose(dropdown);
+            maybeCloseAll();
           });
           toggle.addEventListener("click", (event) => {
             event.preventDefault();
@@ -191,8 +316,12 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
           if (navRoot && target instanceof Node && navRoot.contains(target)) {
             return;
           }
-          closeAll();
+          closeAllWithSync();
         });
+
+        window.addEventListener("resize", () => requestAnimationFrame(syncFrameHeight));
+        setFrameHeight(BASE_FRAME_HEIGHT);
+        requestAnimationFrame(syncFrameHeight);
       })();
     <\/script>
   </body>
@@ -492,7 +621,7 @@ export default function AntigravityHero() {
         <header className={["header", isScrolled ? "scrolled" : "", !navVisible ? "hidden" : ""].filter(Boolean).join(" ")}>
           <div className="anthropic-banner-frame-wrap">
             <iframe
-              title="Anthropic Banner"
+              title="Ancritheon Banner"
               className="anthropic-banner-frame"
               srcDoc={ANTHROPIC_BANNER_IFRAME_SRCDOC}
               scrolling="no"
