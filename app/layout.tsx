@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ancritheon",
-  description: "Ancritheon style hero in Next.js"
+  title: "Agenfic",
+  description: "Agenfic style hero in Next.js"
 };
 
 export default function RootLayout({

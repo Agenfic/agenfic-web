@@ -34,6 +34,10 @@ function pickDataGlyph(): string {
 const ANTHROPIC_NAV_CSS_URL =
   "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/css/ant-brand.shared.ac3f37dad.min.css";
 
+const AGENFIC_WORDMARK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 143 16" width="143" height="16" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <text x="3" y="12.1" fill="#181818" font-family="'Avenir Next', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif" font-size="15.2" font-weight="700" letter-spacing="1.15">AGENF\\C</text>
+</svg>`;
+
 const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
 <html lang="en">
   <head>
@@ -103,10 +107,21 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
       }
       .nav_dropdown_main_content.is-desktop {
         pointer-events: auto !important;
+        background: #f5f5f7 !important;
+        border: 1px solid rgba(29, 29, 31, 0.12) !important;
+      }
+      .nav_dropdown_link:hover,
+      .nav_dropdown_link:focus-visible {
+        background: #e8e8ed !important;
       }
       .nav_logo_lottie {
         display: inline-flex !important;
         align-items: center !important;
+      }
+      .nav_logo_lottie svg {
+        display: block !important;
+        width: 143px !important;
+        height: 16px !important;
       }
       .nav_logo_wordmark {
         display: inline-flex !important;
@@ -159,9 +174,18 @@ const ANTHROPIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
           setFrameHeight(neededHeight);
         };
 
+        const logoLink = document.querySelector(".nav_logo_wrap");
+        if (logoLink && logoLink.tagName === "A") {
+          logoLink.setAttribute("href", "/");
+          logoLink.setAttribute("target", "_top");
+          logoLink.setAttribute("aria-label", "Home page");
+          logoLink.setAttribute("data-cta", "Navigation");
+          logoLink.setAttribute("data-cta-copy", "Agenfic");
+        }
+
         const logo = document.querySelector(".nav_logo_lottie");
         if (logo) {
-          logo.innerHTML = '<span class="nav_logo_wordmark">Ancritheon</span>';
+          logo.innerHTML = ${JSON.stringify(AGENFIC_WORDMARK_SVG)};
         }
 
         const dropdowns = Array.from(document.querySelectorAll(".nav_dropdown_component.w-dropdown"));
@@ -619,10 +643,11 @@ export default function AntigravityHero() {
     <main className="main">
       <section className="welcome-wrapper">
         <header className={["header", isScrolled ? "scrolled" : "", !navVisible ? "hidden" : ""].filter(Boolean).join(" ")}>
-          <div className="anthropic-banner-frame-wrap">
+          <div className="anthropic-banner-frame-wrap" style={{ height: "84px" }}>
             <iframe
-              title="Ancritheon Banner"
+              title="Agenfic Banner"
               className="anthropic-banner-frame"
+              style={{ height: "84px" }}
               srcDoc={ANTHROPIC_BANNER_IFRAME_SRCDOC}
               scrolling="no"
             />
@@ -642,8 +667,8 @@ export default function AntigravityHero() {
         <div className="welcome-section">
           <div className="logo-container">
             <div className="logo">
-              <span className="hero-brand-word" aria-label="Ancritheon">
-                Ancritheon
+              <span className="hero-brand-word" aria-label="Agenfic">
+                Agenfic
               </span>
             </div>
           </div>
@@ -654,7 +679,7 @@ export default function AntigravityHero() {
                 <div className="cursor-container" ref={cursorContainerRef}>
                   <img
                     src="/assets/antigravity-cursor.png"
-                    alt="Ancritheon Blinking Cursor"
+                    alt="Agenfic Blinking Cursor"
                     className="blinking-cursor"
                   />
                 </div>
