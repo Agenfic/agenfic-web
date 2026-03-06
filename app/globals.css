@@ -198,7 +198,7 @@ landing-main-particles-component {
   height: 100%;
   opacity: 1;
   pointer-events: auto;
-  filter: saturate(1.05) contrast(1.08);
+  filter: none;
 }
 
 .header {

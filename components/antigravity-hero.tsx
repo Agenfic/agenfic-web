@@ -425,11 +425,11 @@ export default function AntigravityHero() {
       container,
       theme: "light",
       interactive: true,
-      ringWidth: 0.006,
-      ringWidth2: 0.107,
-      particlesScale: 0.9,
-      ringDisplacement: 0.62,
-      density: 240
+      ringWidth: 0.107,
+      ringWidth2: 0.05,
+      particlesScale: 0.75,
+      ringDisplacement: 0.15,
+      density: 200
     });
 
     return () => {
