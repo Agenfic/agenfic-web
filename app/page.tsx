@@ -1,5 +1,5 @@
-import AntigravityHero from "@/components/antigravity-hero";
+import AgenficHero from "@/components/agenfic-hero";
 
 export default function Page() {
-  return <AntigravityHero />;
+  return <AgenficHero />;
 }

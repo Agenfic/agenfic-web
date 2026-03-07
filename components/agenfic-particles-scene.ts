@@ -28,7 +28,7 @@ import {
 
 type ThemeMode = "light" | "dark";
 
-export type AntigravityParticleOptions = {
+export type AgenficParticleOptions = {
   canvas: HTMLCanvasElement;
   container: HTMLElement;
   theme?: ThemeMode;
@@ -159,7 +159,7 @@ float snoise(vec3 v) {
 `;
 
 class RingParticles {
-  private readonly scene: AntigravityScene;
+  private readonly scene: AgenficScene;
   private readonly renderer: WebGLRenderer;
   private readonly noise = new ValueNoise();
   private readonly ringPos = new Vector2(0, 0);
@@ -183,7 +183,7 @@ class RingParticles {
   private renderMaterial!: ShaderMaterial;
   private mesh!: Points<BufferGeometry, ShaderMaterial>;
 
-  constructor(scene: AntigravityScene) {
+  constructor(scene: AgenficScene) {
     this.scene = scene;
     this.renderer = scene.renderer;
     this.colorScheme = scene.theme === "dark" ? 0 : 1;
@@ -583,7 +583,7 @@ class RingParticles {
   }
 }
 
-class AntigravityScene {
+class AgenficScene {
   readonly canvas: HTMLCanvasElement;
   readonly container: HTMLElement;
   readonly renderer: WebGLRenderer;
@@ -618,6 +618,13 @@ class AntigravityScene {
   private readonly onPointerMove = (event: PointerEvent) => {
     const rect = this.canvas.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) {
+      this.onPointerLeave();
+      return;
+    }
+    const insideX = event.clientX >= rect.left && event.clientX <= rect.right;
+    const insideY = event.clientY >= rect.top && event.clientY <= rect.bottom;
+    if (!insideX || !insideY) {
+      this.onPointerLeave();
       return;
     }
     const x = (event.clientX - rect.left) / rect.width;
@@ -630,7 +637,7 @@ class AntigravityScene {
     this.isIntersecting = false;
   };
 
-  constructor(options: AntigravityParticleOptions) {
+  constructor(options: AgenficParticleOptions) {
     this.canvas = options.canvas;
     this.container = options.container;
     this.theme = options.theme ?? "light";
@@ -685,8 +692,8 @@ class AntigravityScene {
     this.particles = new RingParticles(this);
 
     window.addEventListener("resize", this.onResize);
-    this.canvas.addEventListener("pointermove", this.onPointerMove, { passive: true });
-    this.canvas.addEventListener("pointerleave", this.onPointerLeave);
+    window.addEventListener("pointermove", this.onPointerMove, { passive: true });
+    window.addEventListener("pointerleave", this.onPointerLeave);
   }
 
   resume(): void {
@@ -728,8 +735,8 @@ class AntigravityScene {
   kill(): void {
     this.stop();
     window.removeEventListener("resize", this.onResize);
-    this.canvas.removeEventListener("pointermove", this.onPointerMove);
-    this.canvas.removeEventListener("pointerleave", this.onPointerLeave);
+    window.removeEventListener("pointermove", this.onPointerMove);
+    window.removeEventListener("pointerleave", this.onPointerLeave);
 
     this.particles.kill();
 
@@ -752,12 +759,12 @@ class AntigravityScene {
   }
 }
 
-export class AntigravityParticleController {
-  private readonly scene: AntigravityScene;
+export class AgenficParticleController {
+  private readonly scene: AgenficScene;
   private frameId: number | null = null;
   private lastTimestamp = 0;
 
-  constructor(scene: AntigravityScene) {
+  constructor(scene: AgenficScene) {
     this.scene = scene;
   }
 
@@ -782,9 +789,9 @@ export class AntigravityParticleController {
   };
 }
 
-export const createAntigravityParticles = (options: AntigravityParticleOptions): AntigravityParticleController => {
-  const scene = new AntigravityScene(options);
-  const controller = new AntigravityParticleController(scene);
+export const createAgenficParticles = (options: AgenficParticleOptions): AgenficParticleController => {
+  const scene = new AgenficScene(options);
+  const controller = new AgenficParticleController(scene);
   controller.start();
   return controller;
 };

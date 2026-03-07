@@ -1,4 +1,4 @@
-﻿const HEADER_LOGO_SVG = String.raw`
+const HEADER_LOGO_SVG = String.raw`
 <svg height="21" width="161.49" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 869 113" fill="none">
   <g clip-path="url(#clip0_6001_463)">
     <path fill="#202124" d="M839.836 109.037C839.654 109.462 839.442 109.918 839.199 110.403C838.956 110.949 838.805 111.283 838.744 111.405H830.732C831.096 110.616 831.491 109.735 831.916 108.764C832.341 107.854 832.856 106.731 833.463 105.396C833.828 104.607 834.161 103.878 834.465 103.211C834.768 102.543 835.102 101.784 835.466 100.935C835.891 100.146 836.377 99.1443 836.923 97.9304L841.111 88.8262L821.901 45.3083H830.277L844.844 79.8131H845.026L859.046 45.3083H867.422L843.387 100.753C843.144 101.299 842.75 102.149 842.203 103.302C841.718 104.516 841.232 105.669 840.747 106.761C840.322 107.915 840.018 108.673 839.836 109.037Z"></path>
@@ -121,6 +121,6 @@
 </svg>
 `;
 
-export default function AntigravityHeaderLogo() {
-  return <antigravity-logo className="logo" dangerouslySetInnerHTML={{ __html: HEADER_LOGO_SVG }} />;
+export default function AgenficHeaderLogo() {
+  return <agenfic-logo className="logo" dangerouslySetInnerHTML={{ __html: HEADER_LOGO_SVG }} />;
 }

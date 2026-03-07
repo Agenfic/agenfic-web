@@ -227,7 +227,7 @@ landing-main-particles-component {
   background: transparent;
 }
 
-.anthropic-banner-frame-wrap {
+.agenfic-banner-frame-wrap {
   width: 100%;
   height: 84px;
   overflow: visible;
@@ -236,7 +236,7 @@ landing-main-particles-component {
   pointer-events: auto;
 }
 
-.anthropic-banner-frame {
+.agenfic-banner-frame {
   display: block;
   width: 100%;
   height: 84px;
@@ -715,14 +715,14 @@ landing-main-particles-component {
 }
 
 .main-content .logo svg,
-.main-content .logo .antigravity-logo-image {
+.main-content .logo .agenfic-logo-image {
   width: 100%;
   height: 100%;
   display: block;
 }
 
 app-button,
-antigravity-logo {
+agenfic-logo {
   display: inline-flex;
 }
 
@@ -965,13 +965,19 @@ antigravity-logo {
 
 .logo-container {
   display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   height: 24px;
+  color: var(--theme-surface-on-surface);
 }
 
-.antigravity-logo-image {
+.agenfic-logo-image {
   height: 100%;
   width: auto;
   display: block;

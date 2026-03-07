@@ -9,7 +9,7 @@ $constMatch = [regex]::Match(
 )
 
 if (-not $constMatch.Success) {
-  throw "Could not find consts block for antigravity-logo."
+  throw "Could not find consts block for agenfic-logo."
 }
 
 $templateMatch = [regex]::Match(
@@ -19,7 +19,7 @@ $templateMatch = [regex]::Match(
 )
 
 if (-not $templateMatch.Success) {
-  throw "Could not find template block for antigravity-logo."
+  throw "Could not find template block for agenfic-logo."
 }
 
 $constBlock = $constMatch.Groups["consts"].Value
@@ -373,12 +373,12 @@ const HEADER_LOGO_SVG = String.raw`
 __SVG__
 `;
 
-export default function AntigravityHeaderLogo() {
-  return <antigravity-logo className="logo" dangerouslySetInnerHTML={{ __html: HEADER_LOGO_SVG }} />;
+export default function AgenficHeaderLogo() {
+  return <agenfic-logo className="logo" dangerouslySetInnerHTML={{ __html: HEADER_LOGO_SVG }} />;
 }
 '@
 
 $out = $out.Replace("__SVG__", $svgMarkup)
 
-Set-Content -Path "components\\antigravity-header-logo.tsx" -Value $out -Encoding utf8
+Set-Content -Path "components\\agenfic-header-logo.tsx" -Value $out -Encoding utf8
 Write-Output ("Generated SVG with {0} characters." -f $svgMarkup.Length)
