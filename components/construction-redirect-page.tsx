@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AGENFIC_BANNER_IFRAME_SRCDOC } from "./agenfic-hero";
-import styles from "./constructing-page.module.css";
+import { NAVIGATION_BANNER_IFRAME_HTML } from "./landing-hero";
+import styles from "./construction-redirect-page.module.css";
 
 type Particle = {
   x: number;
@@ -16,7 +16,7 @@ type Particle = {
 
 const TARGET_TEXT = "Page under construction";
 
-export default function ConstructingPage() {
+export default function ConstructionRedirectPage() {
   const pageRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [bannerMounted, setBannerMounted] = useState(false);
@@ -252,7 +252,7 @@ export default function ConstructingPage() {
             <iframe
               title="Agenfic Banner"
               className="agenfic-banner-frame"
-              srcDoc={AGENFIC_BANNER_IFRAME_SRCDOC}
+              srcDoc={NAVIGATION_BANNER_IFRAME_HTML}
               scrolling="no"
             />
           </div>

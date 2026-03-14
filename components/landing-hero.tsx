@@ -1,8 +1,8 @@
 "use client";
 
 import { createElement, useEffect, useRef, useState } from "react";
-import { AGENFIC_BANNER_DESKTOP_HTML } from "./agenfic-banner-desktop-html";
-import { createAgenficParticles } from "./agenfic-particles-scene";
+import { NAVIGATION_BANNER_HTML } from "./navigation-banner-template";
+import { createHeroParticles } from "./hero-particles-scene";
 
 const HEADING = "Autonomous Agents for Real Work";
 const HEADING_BREAK_BEFORE = "Real Work";
@@ -14,7 +14,7 @@ const AGENFIC_WORDMARK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0
   <text x="3" y="12.1" fill="#181818" font-family="'Avenir Next', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif" font-size="15.2" font-weight="700" letter-spacing="1.15">${AGENFIC_WORDMARK_TEXT}</text>
 </svg>`;
 
-export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
+export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -264,7 +264,7 @@ export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
     </style>
   </head>
   <body>
-    ${AGENFIC_BANNER_DESKTOP_HTML}
+    ${NAVIGATION_BANNER_HTML}
     <script>
       (() => {
         // frameElement comes from the parent browsing context, so instanceof checks can fail across realms.
@@ -371,10 +371,10 @@ export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
         }
         normalizeAnchorTargets();
 
-        const CONSTRUCTING_ROUTE = "/constructing";
+        const UNDER_CONSTRUCTION_ROUTE = "/under-construction";
         const PRODUCT_ROUTE_OVERRIDES = new Map([
-          ["Energy Dashboard", "/energy-dashboard"],
-          ["Machine Efficiency", "/machine-efficiency"]
+          ["Renewable Energy Dashboard", "/renewable-energy-dashboard"],
+          ["Pump Efficiency Calculator", "/pump-efficiency-calculator"]
         ]);
 
         const applyDropdownLinkRoutes = (scope = document) => {
@@ -394,8 +394,8 @@ export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
                 ?.textContent?.trim() ?? "";
             const useProductOverride = navLabel === "Products" && PRODUCT_ROUTE_OVERRIDES.has(label);
             const nextHref = useProductOverride
-              ? (PRODUCT_ROUTE_OVERRIDES.get(label) ?? CONSTRUCTING_ROUTE)
-              : CONSTRUCTING_ROUTE;
+              ? (PRODUCT_ROUTE_OVERRIDES.get(label) ?? UNDER_CONSTRUCTION_ROUTE)
+              : UNDER_CONSTRUCTION_ROUTE;
             link.setAttribute("href", nextHref);
             link.setAttribute("target", "_top");
           });
@@ -422,7 +422,7 @@ export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
               if (label === "Pricing") {
                 const pricingLink = document.createElement("a");
                 pricingLink.className = "nav_links_link is-desktop w-inline-block";
-                pricingLink.href = CONSTRUCTING_ROUTE;
+                pricingLink.href = UNDER_CONSTRUCTION_ROUTE;
                 pricingLink.setAttribute("target", "_top");
                 const text = document.createElement("div");
                 text.className = "nav_links_text is-desktop";
@@ -465,11 +465,11 @@ export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
                   const dropdownTexts = panel.querySelectorAll(".nav_dropdown_list .nav_dropdown_item .nav_dropdown_text");
                   const secondItemText = dropdownTexts[1];
                   if (secondItemText) {
-                    secondItemText.textContent = "Energy Dashboard";
+                    secondItemText.textContent = "Renewable Energy Dashboard";
                   }
                   const thirdItemText = dropdownTexts[2];
                   if (thirdItemText) {
-                    thirdItemText.textContent = "Machine Efficiency";
+                    thirdItemText.textContent = "Pump Efficiency Calculator";
                   }
                   const trustCenterBlocks = panel.querySelectorAll(".nav_dropdown_link_block");
                   trustCenterBlocks.forEach((block) => block.remove());
@@ -545,8 +545,8 @@ export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
 
             const comboRenameMap = new Map([
               ["Opus", "Betroth"],
-              ["Sonnet", "Energy Dashboard"],
-              ["Haiku", "Machine Efficiency"],
+              ["Sonnet", "Renewable Energy Dashboard"],
+              ["Haiku", "Pump Efficiency Calculator"],
               ["Agenfic.ai", "Artificial Intelligence"],
               ["Agenfic Console", "Production"]
             ]);
@@ -867,7 +867,7 @@ export const AGENFIC_BANNER_IFRAME_SRCDOC = `<!doctype html>
   </body>
 </html>`;
 
-export default function AgenficHero() {
+export default function LandingHero() {
   const typedContentRef = useRef<HTMLSpanElement>(null);
   const cursorContainerRef = useRef<HTMLDivElement>(null);
   const heroVideoWrapperRef = useRef<HTMLDivElement>(null);
@@ -962,7 +962,7 @@ export default function AgenficHero() {
       return;
     }
 
-    const controller = createAgenficParticles({
+    const controller = createHeroParticles({
       canvas,
       container,
       theme: "light",
@@ -1033,7 +1033,7 @@ export default function AgenficHero() {
               <iframe
                 title="Agenfic Banner"
                 className="agenfic-banner-frame"
-                srcDoc={AGENFIC_BANNER_IFRAME_SRCDOC}
+                srcDoc={NAVIGATION_BANNER_IFRAME_HTML}
                 scrolling="no"
               />
             ) : null}
@@ -1068,8 +1068,8 @@ export default function AgenficHero() {
               <span className="typed-container landing-main">
                 <div className="cursor-container" ref={cursorContainerRef}>
                   <img
-                    src="/assets/agenfic-cursor.png"
-                    alt="Agenfic Blinking Cursor"
+                    src="/assets/blinking-cursor.png"
+                    alt="Agenfic blinking cursor"
                     className="blinking-cursor"
                   />
                 </div>

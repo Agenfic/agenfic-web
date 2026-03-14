@@ -1,4 +1,4 @@
-import "./dashboards.css";
+import "./shared-dashboard-styles.css";
 
 export default function DashboardsLayout({
   children

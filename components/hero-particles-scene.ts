@@ -28,7 +28,7 @@ import {
 
 type ThemeMode = "light" | "dark";
 
-export type AgenficParticleOptions = {
+export type HeroParticleOptions = {
   canvas: HTMLCanvasElement;
   container: HTMLElement;
   theme?: ThemeMode;
@@ -159,7 +159,7 @@ float snoise(vec3 v) {
 `;
 
 class RingParticles {
-  private readonly scene: AgenficScene;
+  private readonly scene: HeroParticleScene;
   private readonly renderer: WebGLRenderer;
   private readonly noise = new ValueNoise();
   private readonly ringPos = new Vector2(0, 0);
@@ -183,7 +183,7 @@ class RingParticles {
   private renderMaterial!: ShaderMaterial;
   private mesh!: Points<BufferGeometry, ShaderMaterial>;
 
-  constructor(scene: AgenficScene) {
+  constructor(scene: HeroParticleScene) {
     this.scene = scene;
     this.renderer = scene.renderer;
     this.colorScheme = scene.theme === "dark" ? 0 : 1;
@@ -583,7 +583,7 @@ class RingParticles {
   }
 }
 
-class AgenficScene {
+class HeroParticleScene {
   readonly canvas: HTMLCanvasElement;
   readonly container: HTMLElement;
   readonly renderer: WebGLRenderer;
@@ -637,7 +637,7 @@ class AgenficScene {
     this.isIntersecting = false;
   };
 
-  constructor(options: AgenficParticleOptions) {
+  constructor(options: HeroParticleOptions) {
     this.canvas = options.canvas;
     this.container = options.container;
     this.theme = options.theme ?? "light";
@@ -759,12 +759,12 @@ class AgenficScene {
   }
 }
 
-export class AgenficParticleController {
-  private readonly scene: AgenficScene;
+export class HeroParticleController {
+  private readonly scene: HeroParticleScene;
   private frameId: number | null = null;
   private lastTimestamp = 0;
 
-  constructor(scene: AgenficScene) {
+  constructor(scene: HeroParticleScene) {
     this.scene = scene;
   }
 
@@ -789,9 +789,9 @@ export class AgenficParticleController {
   };
 }
 
-export const createAgenficParticles = (options: AgenficParticleOptions): AgenficParticleController => {
-  const scene = new AgenficScene(options);
-  const controller = new AgenficParticleController(scene);
+export const createHeroParticles = (options: HeroParticleOptions): HeroParticleController => {
+  const scene = new HeroParticleScene(options);
+  const controller = new HeroParticleController(scene);
   controller.start();
   return controller;
 };

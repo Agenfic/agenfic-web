@@ -1,5 +1,5 @@
-import AgenficHero from "@/components/agenfic-hero";
+import LandingHero from "@/components/landing-hero";
 
 export default function Page() {
-  return <AgenficHero />;
+  return <LandingHero />;
 }

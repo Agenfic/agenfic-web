@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$raw = Get-Content -Path "_bs_component.txt" -Raw
+$raw = Get-Content -Path "wordmark-component-source.txt" -Raw
 
 $constMatch = [regex]::Match(
   $raw,
@@ -369,16 +369,16 @@ if ([string]::IsNullOrWhiteSpace($svgMarkup)) {
 }
 
 $out = @'
-const HEADER_LOGO_SVG = String.raw`
+const WORDMARK_LOGO_SVG = String.raw`
 __SVG__
 `;
 
-export default function AgenficHeaderLogo() {
-  return <agenfic-logo className="logo" dangerouslySetInnerHTML={{ __html: HEADER_LOGO_SVG }} />;
+export default function WordmarkLogo() {
+  return <agenfic-logo className="logo" dangerouslySetInnerHTML={{ __html: WORDMARK_LOGO_SVG }} />;
 }
 '@
 
 $out = $out.Replace("__SVG__", $svgMarkup)
 
-Set-Content -Path "components\\agenfic-header-logo.tsx" -Value $out -Encoding utf8
+Set-Content -Path "components\\wordmark-logo.tsx" -Value $out -Encoding utf8
 Write-Output ("Generated SVG with {0} characters." -f $svgMarkup.Length)

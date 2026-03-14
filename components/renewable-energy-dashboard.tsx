@@ -397,7 +397,7 @@ const buildChartPath = (
     .join(" ");
 };
 
-export default function EnergyDashboard() {
+export default function RenewableEnergyDashboard() {
   const [samples, setSamples] = useState<Sample[]>([]);
   const [windowSize, setWindowSize] = useState<number>(180);
   const [isLive, setIsLive] = useState(true);

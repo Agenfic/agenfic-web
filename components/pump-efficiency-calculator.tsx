@@ -186,7 +186,7 @@ const createStaticTelemetry = (count: number, baseline: TelemetryBaseline) => {
   });
 };
 
-export default function InfluentPumpEfficiency() {
+export default function PumpEfficiencyCalculator() {
   const [powerMode, setPowerMode] = useState<PowerMode>("calculated");
   const [flowM3h, setFlowM3h] = useState(920);
   const [headM, setHeadM] = useState(14.2);
@@ -483,7 +483,7 @@ export default function InfluentPumpEfficiency() {
                 </div>
               </Link>
               <p className="eyebrow">Influent Pump Toolkit</p>
-              <h1>Machine Efficiency Calculator</h1>
+              <h1>Pump Efficiency Calculator</h1>
               <p className="description">
                 Calculate pump efficiency from flow, head, and electrical data with live trend and
                 distribution tracking.
@@ -516,8 +516,8 @@ export default function InfluentPumpEfficiency() {
                 {isLiveFeed ? "Pause Feed" : "Resume Feed"}
               </button>
 
-              <Link className="eff-link" href="/energy-dashboard">
-                Open Energy Dashboard
+              <Link className="eff-link" href="/renewable-energy-dashboard">
+                Open Renewable Energy Dashboard
               </Link>
             </div>
           </header>

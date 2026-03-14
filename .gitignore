@@ -16,3 +16,7 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+.next-backup-*/
+.tmp-*.log
+dev_*.txt
+*.tsbuildinfo
