@@ -374,7 +374,8 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
         const UNDER_CONSTRUCTION_ROUTE = "/under-construction";
         const PRODUCT_ROUTE_OVERRIDES = new Map([
           ["Renewable Energy Dashboard", "/renewable-energy-dashboard"],
-          ["Pump Efficiency Calculator", "/pump-efficiency-calculator"]
+          ["Pump Efficiency Calculator", "/pump-efficiency-calculator"],
+          ["Autonomous Teaching Assistant", "/autonomous-teaching-assistant"]
         ]);
 
         const applyDropdownLinkRoutes = (scope = document) => {
@@ -473,6 +474,20 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
                   }
                   const trustCenterBlocks = panel.querySelectorAll(".nav_dropdown_link_block");
                   trustCenterBlocks.forEach((block) => block.remove());
+                  const ataList = panel.querySelector(".nav_dropdown_list");
+                  if (ataList) {
+                    const ataLi = document.createElement("li");
+                    ataLi.className = "nav_dropdown_item";
+                    const ataA = document.createElement("a");
+                    ataA.className = "nav_dropdown_link w-inline-block is-desktop";
+                    ataA.href = "#";
+                    const ataTxt = document.createElement("div");
+                    ataTxt.className = "nav_dropdown_text";
+                    ataTxt.textContent = "Autonomous Teaching Assistant";
+                    ataA.appendChild(ataTxt);
+                    ataLi.appendChild(ataA);
+                    ataList.appendChild(ataLi);
+                  }
                 } else if (label === "Services") {
                   const sectionHeadings = panel.querySelectorAll(
                     ".nav_dropdown_main_scroll .u-detail-s.u-weight-medium.u-mb-text.u-color-faded"
