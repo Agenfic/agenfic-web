@@ -7,14 +7,70 @@ import { createHeroParticles } from "./hero-particles-scene";
 const HEADING = "Autonomous Agents for Real Work";
 const HEADING_BREAK_BEFORE = "Real Work";
 const AGENFIC_WORDMARK_TEXT = "AGENFIC";
+const HOME_THEME_STORAGE_KEY = "agenfic-home-theme";
 const AGENFIC_NAV_CSS_URL =
   "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/css/ant-brand.shared.ac3f37dad.min.css";
 
-const AGENFIC_WORDMARK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 143 16" width="143" height="16" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-  <text x="3" y="12.1" fill="#181818" font-family="'Avenir Next', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif" font-size="15.2" font-weight="700" letter-spacing="1.15">${AGENFIC_WORDMARK_TEXT}</text>
+type LandingTheme = "light" | "dark";
+
+const LANDING_THEME_TOKENS: Record<
+  LandingTheme,
+  {
+    wordmarkFill: string;
+    navForeground: string;
+    navMuted: string;
+    navHover: string;
+    navPanelBackground: string;
+    navPanelHover: string;
+    navPanelBorder: string;
+    navDivider: string;
+    navPanelShadow: string;
+    navSolidBackground: string;
+    navSolidForeground: string;
+    navSolidHover: string;
+    navSolidDivider: string;
+  }
+> = {
+  light: {
+    wordmarkFill: "#181818",
+    navForeground: "#181818",
+    navMuted: "rgba(24, 24, 24, 0.58)",
+    navHover: "#ece9df",
+    navPanelBackground: "#f5f5f7",
+    navPanelHover: "#e8e8ed",
+    navPanelBorder: "rgba(29, 29, 31, 0.12)",
+    navDivider: "rgba(24, 24, 24, 0.1)",
+    navPanelShadow: "0 16px 50px rgba(18, 19, 23, 0.12)",
+    navSolidBackground: "#181818",
+    navSolidForeground: "#f9f9f7",
+    navSolidHover: "#2a2a2a",
+    navSolidDivider: "rgba(249, 249, 247, 0.18)"
+  },
+  dark: {
+    wordmarkFill: "#f0efeb",
+    navForeground: "#f0efeb",
+    navMuted: "rgba(240, 239, 235, 0.62)",
+    navHover: "#24272d",
+    navPanelBackground: "#17191d",
+    navPanelHover: "#24272d",
+    navPanelBorder: "rgba(240, 239, 235, 0.16)",
+    navDivider: "rgba(240, 239, 235, 0.12)",
+    navPanelShadow: "0 16px 50px rgba(0, 0, 0, 0.34)",
+    navSolidBackground: "#f0efeb",
+    navSolidForeground: "#121317",
+    navSolidHover: "#d9d7d1",
+    navSolidDivider: "rgba(18, 19, 23, 0.18)"
+  }
+};
+
+const getWordmarkSvg = (fill: string) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 143 16" width="143" height="16" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <text x="3" y="12.1" fill="${fill}" font-family="'Avenir Next', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif" font-size="15.2" font-weight="700" letter-spacing="1.15">${AGENFIC_WORDMARK_TEXT}</text>
 </svg>`;
 
-export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
+const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
+  const themeTokens = LANDING_THEME_TOKENS[theme];
+
+  return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -22,10 +78,26 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
     <base target="_top" />
     <link href="${AGENFIC_NAV_CSS_URL}" rel="stylesheet" type="text/css" crossorigin="anonymous" />
     <style>
+      :root {
+        color-scheme: ${theme};
+        --nav-foreground: ${themeTokens.navForeground};
+        --nav-muted: ${themeTokens.navMuted};
+        --nav-hover: ${themeTokens.navHover};
+        --nav-panel-background: ${themeTokens.navPanelBackground};
+        --nav-panel-hover: ${themeTokens.navPanelHover};
+        --nav-panel-border: ${themeTokens.navPanelBorder};
+        --nav-divider: ${themeTokens.navDivider};
+        --nav-panel-shadow: ${themeTokens.navPanelShadow};
+        --nav-solid-background: ${themeTokens.navSolidBackground};
+        --nav-solid-foreground: ${themeTokens.navSolidForeground};
+        --nav-solid-hover: ${themeTokens.navSolidHover};
+        --nav-solid-divider: ${themeTokens.navSolidDivider};
+      }
       html, body {
         margin: 0;
         padding: 0;
         background: transparent;
+        color: var(--nav-foreground);
         overflow: visible;
       }
       .nav_wrap,
@@ -84,12 +156,13 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
       }
       .nav_dropdown_main_content.is-desktop {
         pointer-events: auto !important;
-        background: #f5f5f7 !important;
-        border: 1px solid rgba(29, 29, 31, 0.12) !important;
+        background: var(--nav-panel-background) !important;
+        border: 1px solid var(--nav-panel-border) !important;
+        box-shadow: var(--nav-panel-shadow) !important;
       }
       .nav_dropdown_link:hover,
       .nav_dropdown_link:focus-visible {
-        background: #e8e8ed !important;
+        background: var(--nav-panel-hover) !important;
       }
       .nav_logo_lottie {
         display: inline-flex !important;
@@ -109,8 +182,60 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
         line-height: 1 !important;
         letter-spacing: -0.02em !important;
         font-weight: 500 !important;
-        color: #181818 !important;
+        color: var(--nav-foreground) !important;
         font-family: inherit !important;
+      }
+      .nav_logo_wrap,
+      .nav_links_link,
+      .nav_dropdown_link,
+      .btn_main_wrap.is-nav,
+      .mobile-nav-link {
+        color: var(--nav-foreground) !important;
+      }
+      .nav_links_link:hover,
+      .nav_links_link:focus-visible,
+      .btn_main_wrap.is-nav:hover,
+      .btn_main_wrap.is-nav:focus-visible {
+        background: var(--nav-hover) !important;
+      }
+      .u-color-faded {
+        color: var(--nav-muted) !important;
+      }
+      .nav_dropdown_link_block {
+        border-top: 1px solid var(--nav-divider) !important;
+      }
+      .btn_main_wrap {
+        border: 1px solid var(--nav-panel-border) !important;
+      }
+      .btn_main_wrap.is-combo,
+      .btn_main_wrap.w-variant-c370121c-4703-26a2-b763-05e4aedcfa0f {
+        background: var(--nav-solid-background) !important;
+        color: var(--nav-solid-foreground) !important;
+        border-color: transparent !important;
+      }
+      .btn_main_wrap.is-combo:hover,
+      .btn_main_wrap.is-combo:focus-visible,
+      .btn_main_wrap.w-variant-c370121c-4703-26a2-b763-05e4aedcfa0f:hover,
+      .btn_main_wrap.w-variant-c370121c-4703-26a2-b763-05e4aedcfa0f:focus-visible {
+        background: var(--nav-solid-hover) !important;
+      }
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown {
+        border-radius: 0 12px 12px 0 !important;
+        background: var(--nav-solid-background) !important;
+        color: var(--nav-solid-foreground) !important;
+        border-left: 1px solid var(--nav-solid-divider) !important;
+      }
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .btn_dropdown_link_wrap,
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .btn_dropdown_icon_wrap,
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .nav_links_svg,
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .icon-embed-xsmall,
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .icon-embed-xsmall svg {
+        color: inherit !important;
+        background: transparent !important;
+      }
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown:hover,
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown:focus-visible {
+        background: var(--nav-solid-hover) !important;
       }
       .mobile-nav-toggle {
         display: none !important;
@@ -161,8 +286,8 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
           padding: 8px 14px !important;
           border: 0 !important;
           border-radius: 999px !important;
-          background: #181818 !important;
-          color: #f9f9f7 !important;
+          background: var(--nav-solid-background) !important;
+          color: var(--nav-solid-foreground) !important;
           font-size: 13px !important;
           line-height: 1 !important;
           letter-spacing: 0.08px !important;
@@ -172,7 +297,7 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
         }
         .mobile-nav-toggle.button.button-compact.button-primary.call-to-action--nav.menu-toggle:hover,
         .mobile-nav-toggle.button.button-compact.button-primary.call-to-action--nav.menu-toggle:focus-visible {
-          background: #2a2a2a !important;
+          background: var(--nav-solid-hover) !important;
           outline: none !important;
         }
         .mobile-nav-panel {
@@ -181,9 +306,9 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
           left: 12px;
           right: 12px;
           border-radius: 16px;
-          border: 1px solid rgba(24, 24, 24, 0.1);
-          background: #f5f5f7;
-          box-shadow: 0 16px 50px rgba(18, 19, 23, 0.12);
+          border: 1px solid var(--nav-panel-border);
+          background: var(--nav-panel-background);
+          box-shadow: var(--nav-panel-shadow);
           padding: 8px;
           flex-direction: column;
           gap: 4px;
@@ -195,7 +320,6 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
         .mobile-nav-link {
           display: block;
           text-decoration: none;
-          color: #181818;
           border-radius: 10px;
           padding: 9px 10px;
           font-size: 14px;
@@ -204,16 +328,16 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
         }
         .mobile-nav-link:hover,
         .mobile-nav-link:focus-visible {
-          background: #e8e8ed;
+          background: var(--nav-panel-hover);
           outline: none;
         }
         .mobile-nav-link.is-cta {
-          background: #181818;
-          color: #f9f9f7;
+          background: var(--nav-solid-background);
+          color: var(--nav-solid-foreground);
         }
         .mobile-nav-link.is-cta:hover,
         .mobile-nav-link.is-cta:focus-visible {
-          background: #2a2a2a;
+          background: var(--nav-solid-hover);
         }
       }
 
@@ -367,7 +491,7 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
 
         const logo = document.querySelector(".nav_logo_lottie");
         if (logo) {
-          logo.innerHTML = ${JSON.stringify(AGENFIC_WORDMARK_SVG)};
+          logo.innerHTML = ${JSON.stringify(getWordmarkSvg(themeTokens.wordmarkFill))};
         }
         normalizeAnchorTargets();
 
@@ -881,6 +1005,9 @@ export const NAVIGATION_BANNER_IFRAME_HTML = `<!doctype html>
     <\/script>
   </body>
 </html>`;
+};
+
+export const NAVIGATION_BANNER_IFRAME_HTML = getNavigationBannerIframeHtml("light");
 
 export default function LandingHero() {
   const typedContentRef = useRef<HTMLSpanElement>(null);
@@ -889,13 +1016,27 @@ export default function LandingHero() {
   const mainParticlesContainerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const lastScrollYRef = useRef(0);
+  const [theme, setTheme] = useState<LandingTheme>("light");
   const [bannerMounted, setBannerMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
 
   useEffect(() => {
+    const storedTheme = window.localStorage.getItem(HOME_THEME_STORAGE_KEY);
+    if (storedTheme === "light" || storedTheme === "dark") {
+      setTheme(storedTheme);
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    }
     setBannerMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!bannerMounted) {
+      return;
+    }
+    window.localStorage.setItem(HOME_THEME_STORAGE_KEY, theme);
+  }, [bannerMounted, theme]);
 
   useEffect(() => {
     const typedEl = typedContentRef.current;
@@ -980,7 +1121,7 @@ export default function LandingHero() {
     const controller = createHeroParticles({
       canvas,
       container,
-      theme: "light",
+      theme,
       interactive: true,
       ringWidth: 0.107,
       ringWidth2: 0.05,
@@ -992,7 +1133,7 @@ export default function LandingHero() {
     return () => {
       controller.destroy();
     };
-  }, []);
+  }, [theme]);
   useEffect(() => {
     const heroVideoWrapper = heroVideoWrapperRef.current;
     if (!heroVideoWrapper) {
@@ -1040,7 +1181,7 @@ export default function LandingHero() {
   }, []);
 
   return (
-    <main className="main">
+    <main className="main" data-theme={theme}>
       <section className="welcome-wrapper">
         <header className={["header", isScrolled ? "scrolled" : "", !navVisible ? "hidden" : ""].filter(Boolean).join(" ")}>
           <div className="agenfic-banner-frame-wrap">
@@ -1048,7 +1189,7 @@ export default function LandingHero() {
               <iframe
                 title="Agenfic Banner"
                 className="agenfic-banner-frame"
-                srcDoc={NAVIGATION_BANNER_IFRAME_HTML}
+                srcDoc={getNavigationBannerIframeHtml(theme)}
                 scrolling="no"
               />
             ) : null}
@@ -1059,7 +1200,7 @@ export default function LandingHero() {
           <div style={{ opacity: 1 }}>
             {createElement(
               "landing-main-particles-component",
-              { theme: "light" },
+              { theme },
               <div className="main-particles-component-section">
                 <div className="main-particles-container" ref={mainParticlesContainerRef}>
                   <canvas ref={canvasRef} data-engine="three.js r180" />
@@ -1103,6 +1244,25 @@ export default function LandingHero() {
           </div>
         </div>
       </section>
+
+      <div className="theme-switcher" role="group" aria-label="Color theme">
+        <button
+          type="button"
+          className={`theme-switcher-button${theme === "light" ? " is-active" : ""}`}
+          onClick={() => setTheme("light")}
+          aria-pressed={theme === "light"}
+        >
+          Light
+        </button>
+        <button
+          type="button"
+          className={`theme-switcher-button${theme === "dark" ? " is-active" : ""}`}
+          onClick={() => setTheme("dark")}
+          aria-pressed={theme === "dark"}
+        >
+          Dark
+        </button>
+      </div>
     </main>
   );
 }

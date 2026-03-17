@@ -650,17 +650,17 @@ class HeroParticleScene {
     this.ringDisplacement = options.ringDisplacement ?? 0.15;
 
     if (this.theme === "dark") {
-      this.color1 = "#7189ff";
-      this.color2 = "#3074f9";
+      this.color1 = "#ffffff";
+      this.color2 = "#808080";
       this.color3 = "#000000";
     } else {
-      this.color1 = "#2c64ed";
-      this.color2 = "#f84242";
-      this.color3 = "#ffcf03";
+      this.color1 = "#000000";
+      this.color2 = "#808080";
+      this.color3 = "#ffffff";
     }
 
     this.scene = new Scene();
-    this.scene.background = new Color(this.theme === "dark" ? 0x121317 : 0xffffff);
+    this.scene.background = new Color(this.theme === "dark" ? 0x121317 : 0xf0efeb);
 
     this.renderer = new WebGLRenderer({
       canvas: this.canvas,
