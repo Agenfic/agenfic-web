@@ -35,6 +35,8 @@ export type HeroParticleOptions = {
   interactive?: boolean;
   pixelRatio?: number;
   particlesScale?: number;
+  minParticleScale?: number;
+  groupScale?: number;
   density?: number;
   ringWidth?: number;
   ringWidth2?: number;
@@ -187,8 +189,7 @@ class RingParticles {
     this.scene = scene;
     this.renderer = scene.renderer;
     this.colorScheme = scene.theme === "dark" ? 0 : 1;
-    this.particleScale =
-      (this.scene.renderer.domElement.width / this.scene.pixelRatio / 2000) * this.scene.particlesScale;
+    this.particleScale = this.getParticleScale();
     this.createPoints();
     this.init();
   }
@@ -222,8 +223,7 @@ class RingParticles {
       this.ringPos.lerp(this.cursorPos, 0.01);
     }
 
-    this.particleScale =
-      (this.scene.renderer.domElement.width / this.scene.pixelRatio / 2000) * this.scene.particlesScale;
+    this.particleScale = this.getParticleScale();
 
     this.simMaterial.uniforms.uPosition.value = this.hasRendered ? this.rtA.texture : this.posTexture;
     this.simMaterial.uniforms.uTime.value = now;
@@ -578,8 +578,14 @@ class RingParticles {
 
     this.mesh = new Points(geometry, this.renderMaterial);
     this.mesh.position.set(0, 0, 0);
-    this.mesh.scale.set(5, 5, 5);
+    this.mesh.scale.set(this.scene.groupScale, this.scene.groupScale, this.scene.groupScale);
     this.scene.scene.add(this.mesh);
+  }
+
+  private getParticleScale(): number {
+    const baseScale =
+      (this.scene.renderer.domElement.width / this.scene.pixelRatio / 2000) * this.scene.particlesScale;
+    return Math.max(baseScale, this.scene.minParticleScale);
   }
 }
 
@@ -593,6 +599,8 @@ class HeroParticleScene {
   readonly theme: ThemeMode;
   readonly pixelRatio: number;
   readonly particlesScale: number;
+  readonly minParticleScale: number;
+  readonly groupScale: number;
   readonly density: number;
   readonly ringWidth: number;
   readonly ringWidth2: number;
@@ -644,6 +652,8 @@ class HeroParticleScene {
     this.interactive = options.interactive ?? true;
     this.pixelRatio = Math.min(options.pixelRatio ?? window.devicePixelRatio ?? 1, 2);
     this.particlesScale = options.particlesScale ?? 0.75;
+    this.minParticleScale = options.minParticleScale ?? 0;
+    this.groupScale = options.groupScale ?? 5;
     this.density = options.density ?? 200;
     this.ringWidth = options.ringWidth ?? 0.107;
     this.ringWidth2 = options.ringWidth2 ?? 0.05;

@@ -14,6 +14,7 @@ const AGENFIC_WORDMARK_TEXT = "AGENFIC";
 const HOME_THEME_STORAGE_KEY = "agenfic-home-theme";
 const AGENFIC_NAV_CSS_URL =
   "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/css/ant-brand.shared.ac3f37dad.min.css";
+const MOBILE_LAYOUT_QUERY = "(max-width: 767px)";
 
 export type LandingTheme = "light" | "dark";
 
@@ -1068,6 +1069,7 @@ export default function LandingHero() {
   const lastScrollYRef = useRef(0);
   const [theme, setTheme] = useState<LandingTheme>("light");
   const [bannerMounted, setBannerMounted] = useState(false);
+  const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
   const [typedEmphasis, setTypedEmphasis] = useState("");
@@ -1076,6 +1078,20 @@ export default function LandingHero() {
   useEffect(() => {
     setTheme(getPreferredTheme());
     setBannerMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(MOBILE_LAYOUT_QUERY);
+    const syncMobileLayout = () => {
+      setIsMobileLayout(mediaQuery.matches);
+    };
+
+    syncMobileLayout();
+    mediaQuery.addEventListener("change", syncMobileLayout);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncMobileLayout);
+    };
   }, []);
 
   useEffect(() => {
@@ -1131,17 +1147,19 @@ export default function LandingHero() {
       container,
       theme,
       interactive: true,
-      ringWidth: 0.107,
-      ringWidth2: 0.05,
-      particlesScale: 0.75,
-      ringDisplacement: 0.15,
-      density: 200
+      groupScale: isMobileLayout ? 2.5 : 5,
+      ringWidth: isMobileLayout ? 0.125 : 0.107,
+      ringWidth2: isMobileLayout ? 0.06 : 0.05,
+      particlesScale: isMobileLayout ? 1.35 : 0.75,
+      minParticleScale: isMobileLayout ? 0.4 : 0,
+      ringDisplacement: isMobileLayout ? 0.18 : 0.15,
+      density: isMobileLayout ? 240 : 200
     });
 
     return () => {
       controller.destroy();
     };
-  }, [theme]);
+  }, [isMobileLayout, theme]);
   useEffect(() => {
     const heroVideoWrapper = heroVideoWrapperRef.current;
     if (!heroVideoWrapper) {
