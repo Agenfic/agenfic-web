@@ -1,16 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { NAVIGATION_BANNER_IFRAME_HTML } from "./landing-hero";
+import {
+  getNavigationBannerIframeHtml,
+  getPreferredTheme,
+  type LandingTheme
+} from "./landing-hero";
 import styles from "./autonomous-teaching-assistant-landing.module.css";
 
 export default function AutonomousTeachingAssistant() {
+  const [theme, setTheme] = useState<LandingTheme>("light");
   const [bannerMounted, setBannerMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
+    setTheme(getPreferredTheme());
     setBannerMounted(true);
   }, []);
 
@@ -37,7 +43,7 @@ export default function AutonomousTeachingAssistant() {
   }, []);
 
   return (
-    <main className={styles.page}>
+    <main className={`main ${styles.page}`}>
       {/* Sticky nav */}
       <header
         className={["header", isScrolled ? "scrolled" : "", !navVisible ? "hidden" : ""]
@@ -49,7 +55,7 @@ export default function AutonomousTeachingAssistant() {
             <iframe
               title="Agenfic Banner"
               className="agenfic-banner-frame"
-              srcDoc={NAVIGATION_BANNER_IFRAME_HTML}
+              srcDoc={getNavigationBannerIframeHtml(theme)}
               scrolling="no"
             />
           ) : null}

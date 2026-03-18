@@ -15,7 +15,7 @@ const HOME_THEME_STORAGE_KEY = "agenfic-home-theme";
 const AGENFIC_NAV_CSS_URL =
   "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/css/ant-brand.shared.ac3f37dad.min.css";
 
-type LandingTheme = "light" | "dark";
+export type LandingTheme = "light" | "dark";
 
 const LANDING_THEME_TOKENS: Record<
   LandingTheme,
@@ -71,7 +71,7 @@ const getWordmarkSvg = (fill: string) => `<svg xmlns="http://www.w3.org/2000/svg
   <text x="3" y="12.1" fill="${fill}" font-family="'Avenir Next', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif" font-size="15.2" font-weight="700" letter-spacing="1.15">${AGENFIC_WORDMARK_TEXT}</text>
 </svg>`;
 
-const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
+export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
   const themeTokens = LANDING_THEME_TOKENS[theme];
 
   return `<!doctype html>
@@ -1013,6 +1013,19 @@ const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
 
 export const NAVIGATION_BANNER_IFRAME_HTML = getNavigationBannerIframeHtml("light");
 
+export const getPreferredTheme = (): LandingTheme => {
+  if (typeof window === "undefined") {
+    return "light";
+  }
+
+  const storedTheme = window.localStorage.getItem(HOME_THEME_STORAGE_KEY);
+  if (storedTheme === "light" || storedTheme === "dark") {
+    return storedTheme;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+};
+
 export default function LandingHero() {
   const heroVideoWrapperRef = useRef<HTMLDivElement>(null);
   const mainParticlesContainerRef = useRef<HTMLDivElement>(null);
@@ -1022,14 +1035,11 @@ export default function LandingHero() {
   const [bannerMounted, setBannerMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
+  const [typedEmphasis, setTypedEmphasis] = useState("");
+  const [isSubcopyVisible, setIsSubcopyVisible] = useState(false);
 
   useEffect(() => {
-    const storedTheme = window.localStorage.getItem(HOME_THEME_STORAGE_KEY);
-    if (storedTheme === "light" || storedTheme === "dark") {
-      setTheme(storedTheme);
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    }
+    setTheme(getPreferredTheme());
     setBannerMounted(true);
   }, []);
 
@@ -1037,8 +1047,42 @@ export default function LandingHero() {
     if (!bannerMounted) {
       return;
     }
+
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
     window.localStorage.setItem(HOME_THEME_STORAGE_KEY, theme);
   }, [bannerMounted, theme]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTypedEmphasis(HEADING_LINE_TWO_EMPHASIS);
+      setIsSubcopyVisible(true);
+      return;
+    }
+
+    setTypedEmphasis("");
+    setIsSubcopyVisible(false);
+    let index = 0;
+    let interval: number | undefined;
+    const startTimeout = window.setTimeout(() => {
+      interval = window.setInterval(() => {
+        index += 1;
+        setTypedEmphasis(HEADING_LINE_TWO_EMPHASIS.slice(0, index));
+
+        if (index >= HEADING_LINE_TWO_EMPHASIS.length) {
+          window.clearInterval(interval);
+          setIsSubcopyVisible(true);
+        }
+      }, 34);
+    }, 220);
+
+    return () => {
+      window.clearTimeout(startTimeout);
+      if (interval !== undefined) {
+        window.clearInterval(interval);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1145,17 +1189,24 @@ export default function LandingHero() {
               <span className="landing-main-line">{HEADING_LINE_ONE}</span>
               <span className="landing-main-line landing-main-line-secondary">
                 <span>{HEADING_LINE_TWO_PREFIX}</span>
-                <em>{HEADING_LINE_TWO_EMPHASIS}</em>
-                <span aria-hidden="true" className="blinking-cursor landing-main-cursor">
-                  |
+                <span className="landing-main-emphasis-wrap">
+                  <span aria-hidden="true" className="landing-main-emphasis-placeholder">
+                    {HEADING_LINE_TWO_EMPHASIS}
+                  </span>
+                  <span className="landing-main-emphasis-active">
+                    <em>{typedEmphasis}</em>
+                    <span aria-hidden="true" className="blinking-cursor landing-main-cursor">
+                      |
+                    </span>
+                  </span>
                 </span>
               </span>
             </h1>
-            <p className="landing-main-subcopy">{SUPPORTING_COPY}</p>
+            <p className={`landing-main-subcopy${isSubcopyVisible ? " is-visible" : ""}`}>{SUPPORTING_COPY}</p>
           </div>
 
           <div className="grid-row welcome-cta">
-            <button type="button" className="button button-primary call-to-action">
+            <button type="button" className="button button-primary call-to-action explore-use-cases-button">
               Explore use cases
             </button>
             <button type="button" className="button button-secondary call-to-action">
@@ -1171,6 +1222,7 @@ export default function LandingHero() {
           className={`theme-switcher-button${theme === "light" ? " is-active" : ""}`}
           onClick={() => setTheme("light")}
           aria-pressed={theme === "light"}
+          data-theme-option="light"
         >
           Light
         </button>
@@ -1179,6 +1231,7 @@ export default function LandingHero() {
           className={`theme-switcher-button${theme === "dark" ? " is-active" : ""}`}
           onClick={() => setTheme("dark")}
           aria-pressed={theme === "dark"}
+          data-theme-option="dark"
         >
           Dark
         </button>

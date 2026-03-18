@@ -650,13 +650,13 @@ class HeroParticleScene {
     this.ringDisplacement = options.ringDisplacement ?? 0.15;
 
     if (this.theme === "dark") {
-      this.color1 = "#ffffff";
-      this.color2 = "#808080";
-      this.color3 = "#000000";
+      this.color1 = "#d8ecff";
+      this.color2 = "#4ea3ff";
+      this.color3 = "#0b2f6b";
     } else {
-      this.color1 = "#000000";
-      this.color2 = "#808080";
-      this.color3 = "#ffffff";
+      this.color1 = "#8f4f39";
+      this.color2 = "#C4755A";
+      this.color3 = "#e0af9f";
     }
 
     this.scene = new Scene();

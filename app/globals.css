@@ -148,6 +148,7 @@ body {
   transition: background-color 200ms ease, color 200ms ease;
 }
 
+:root[data-theme="dark"] .main,
 .main[data-theme="dark"] {
   --landing-bg: #121317;
   --landing-nav-text: #f0efeb;
@@ -1088,6 +1089,27 @@ agenfic-logo {
   font-weight: 380;
 }
 
+.landing-main-emphasis-wrap {
+  display: inline-grid;
+  align-items: baseline;
+}
+
+.landing-main-emphasis-placeholder,
+.landing-main-emphasis-active {
+  grid-area: 1 / 1;
+  white-space: pre;
+}
+
+.landing-main-emphasis-placeholder {
+  visibility: hidden;
+}
+
+.landing-main-emphasis-active {
+  justify-self: start;
+  display: inline-flex;
+  align-items: baseline;
+}
+
 .landing-main-subcopy {
   margin: 28px auto 0;
   max-inline-size: 840px;
@@ -1095,6 +1117,14 @@ agenfic-logo {
   font-size: var(--cta-size);
   line-height: var(--cta-line-height);
   letter-spacing: var(--cta-letter-spacing);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1680ms ease, transform 1680ms ease;
+}
+
+.landing-main-subcopy.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .blinking-cursor {
@@ -1157,6 +1187,28 @@ agenfic-logo {
   background: var(--landing-button-solid-hover);
 }
 
+:root[data-theme="light"] .main .explore-use-cases-button,
+.main[data-theme="light"] .explore-use-cases-button {
+  background: #c4755a;
+  color: #f9f9f7;
+}
+
+:root[data-theme="light"] .main .explore-use-cases-button:hover,
+.main[data-theme="light"] .explore-use-cases-button:hover {
+  background: #ae664d;
+}
+
+:root[data-theme="dark"] .main .explore-use-cases-button,
+.main[data-theme="dark"] .explore-use-cases-button {
+  background: #8ec5ff;
+  color: #121317;
+}
+
+:root[data-theme="dark"] .main .explore-use-cases-button:hover,
+.main[data-theme="dark"] .explore-use-cases-button:hover {
+  background: #79b8fb;
+}
+
 .button-secondary {
   background: var(--theme-button-secondary);
   color: var(--theme-surface-on-surface);
@@ -1212,8 +1264,18 @@ agenfic-logo {
   color: var(--landing-toggle-active-fg);
 }
 
+:root[data-theme="light"] .theme-switcher-button[data-theme-option="light"],
+:root[data-theme="dark"] .theme-switcher-button[data-theme-option="dark"] {
+  background: var(--landing-toggle-active-bg);
+  color: var(--landing-toggle-active-fg);
+}
+
 .theme-switcher-button.is-active:hover,
-.theme-switcher-button.is-active:focus-visible {
+.theme-switcher-button.is-active:focus-visible,
+:root[data-theme="light"] .theme-switcher-button[data-theme-option="light"]:hover,
+:root[data-theme="light"] .theme-switcher-button[data-theme-option="light"]:focus-visible,
+:root[data-theme="dark"] .theme-switcher-button[data-theme-option="dark"]:hover,
+:root[data-theme="dark"] .theme-switcher-button[data-theme-option="dark"]:focus-visible {
   background: var(--landing-toggle-active-bg);
 }
 
