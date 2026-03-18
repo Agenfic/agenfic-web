@@ -571,6 +571,7 @@ landing-main-particles-component {
   gap: 0;
   border-radius: 12px;
   overflow: hidden;
+  background: var(--landing-button-solid-bg);
 }
 
 .btn_main_wrap {
@@ -693,6 +694,14 @@ landing-main-particles-component {
 .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .icon-embed-xsmall svg {
   color: inherit;
   background: transparent;
+}
+
+.nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .btn_dropdown_link_wrap {
+  border: 0;
+  border-left: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
 }
 
 .nav_linkout_icon {

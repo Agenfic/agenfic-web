@@ -217,16 +217,36 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
         color: var(--nav-solid-foreground) !important;
         border-color: transparent !important;
       }
+      .btn_main_wrap.is-combo {
+        min-height: 40px !important;
+        height: 40px !important;
+        padding: 0 16px !important;
+        border-radius: 12px 0 0 12px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
       .btn_main_wrap.is-combo:hover,
       .btn_main_wrap.is-combo:focus-visible,
       .btn_main_wrap.w-variant-c370121c-4703-26a2-b763-05e4aedcfa0f:hover,
       .btn_main_wrap.w-variant-c370121c-4703-26a2-b763-05e4aedcfa0f:focus-visible {
         background: var(--nav-solid-hover) !important;
       }
+      .nav_btn_combo_wrap {
+        border-radius: 12px !important;
+        overflow: visible !important;
+        height: 40px !important;
+        padding-left: 0 !important;
+        align-items: stretch !important;
+      }
       .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown {
         border-radius: 0 12px 12px 0 !important;
         background: var(--nav-solid-background) !important;
         color: var(--nav-solid-foreground) !important;
+        min-height: 40px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        padding: 0 !important;
         border-left: 1px solid var(--nav-solid-divider) !important;
       }
       .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .btn_dropdown_link_wrap,
@@ -236,6 +256,14 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
       .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .icon-embed-xsmall svg {
         color: inherit !important;
         background: transparent !important;
+      }
+      .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown .btn_dropdown_link_wrap {
+        border: 0 !important;
+        border-left: 0 !important;
+        border-radius: 0 12px 12px 0 !important;
+        background: inherit !important;
+        width: 100% !important;
+        height: 100% !important;
       }
       .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown:hover,
       .nav_btn_combo_wrap .nav_links_link.is-btn-dropdown:focus-visible {
