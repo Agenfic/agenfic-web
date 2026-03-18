@@ -155,6 +155,10 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
       .nav_dropdown_component.w-dropdown {
         position: relative !important;
       }
+      .nav_dropdown_component.w-dropdown > .nav_dropdown_main_wrap.is-desktop {
+        top: 100% !important;
+        padding-top: 10px !important;
+      }
       .nav_dropdown_main_wrap.is-desktop {
         z-index: 9999 !important;
       }
