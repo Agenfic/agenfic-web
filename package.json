@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node -r ./scripts/onedrive-readlink-patch.cjs ./node_modules/next/dist/bin/next dev",
-    "build": "node -r ./scripts/onedrive-readlink-patch.cjs ./node_modules/next/dist/bin/next build",
-    "start": "node -r ./scripts/onedrive-readlink-patch.cjs ./node_modules/next/dist/bin/next start",
+    "dev": "node --require ./scripts/onedrive-readlink-patch.cjs ./node_modules/next/dist/bin/next dev",
+    "build": "node --require ./scripts/onedrive-readlink-patch.cjs ./node_modules/next/dist/bin/next build",
+    "start": "node --require ./scripts/onedrive-readlink-patch.cjs ./node_modules/next/dist/bin/next start",
     "lint": "next lint"
   },
   "dependencies": {

@@ -4,8 +4,12 @@ import { createElement, useEffect, useRef, useState } from "react";
 import { NAVIGATION_BANNER_HTML } from "./navigation-banner-template";
 import { createHeroParticles } from "./hero-particles-scene";
 
-const HEADING = "Autonomous Agents for Real Work";
-const HEADING_BREAK_BEFORE = "Real Work";
+const HEADING_LINE_ONE = "The AI advantage,";
+const HEADING_LINE_TWO_PREFIX = "finally ";
+const HEADING_LINE_TWO_EMPHASIS = "within reach.";
+const HEADING = `${HEADING_LINE_ONE} ${HEADING_LINE_TWO_PREFIX}${HEADING_LINE_TWO_EMPHASIS}`;
+const SUPPORTING_COPY =
+  "Automation, strategy, and custom AI solutions — built to make your business unstoppable.";
 const AGENFIC_WORDMARK_TEXT = "AGENFIC";
 const HOME_THEME_STORAGE_KEY = "agenfic-home-theme";
 const AGENFIC_NAV_CSS_URL =
@@ -1010,8 +1014,6 @@ const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
 export const NAVIGATION_BANNER_IFRAME_HTML = getNavigationBannerIframeHtml("light");
 
 export default function LandingHero() {
-  const typedContentRef = useRef<HTMLSpanElement>(null);
-  const cursorContainerRef = useRef<HTMLDivElement>(null);
   const heroVideoWrapperRef = useRef<HTMLDivElement>(null);
   const mainParticlesContainerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1037,79 +1039,6 @@ export default function LandingHero() {
     }
     window.localStorage.setItem(HOME_THEME_STORAGE_KEY, theme);
   }, [bannerMounted, theme]);
-
-  useEffect(() => {
-    const typedEl = typedContentRef.current;
-    const cursorEl = cursorContainerRef.current;
-    if (!typedEl || !cursorEl) {
-      return;
-    }
-
-    typedEl.innerHTML = "";
-    cursorEl.style.opacity = "1";
-
-    const chars: HTMLSpanElement[] = [];
-    const forcedBreakIndex = HEADING.indexOf(HEADING_BREAK_BEFORE);
-    for (let i = 0; i < HEADING.length; i += 1) {
-      if (i === forcedBreakIndex && forcedBreakIndex !== -1) {
-        typedEl.appendChild(document.createElement("br"));
-      }
-      const character = HEADING[i];
-      const span = document.createElement("span");
-      span.className = "char";
-      span.textContent = character;
-      typedEl.appendChild(span);
-      chars.push(span);
-    }
-
-    let visible = 0;
-    const timers: number[] = [];
-
-    const updateCursor = (index: number) => {
-      if (index < 0 || index >= chars.length) {
-        return;
-      }
-      const char = chars[index];
-      const x = char.offsetLeft + char.offsetWidth + 10;
-      const y = char.offsetTop;
-      cursorEl.style.setProperty("--cursor-pos-x", `${x}px`);
-      cursorEl.style.setProperty("--cursor-pos-y", `${y}px`);
-    };
-
-    const step = () => {
-      if (visible >= chars.length) {
-        const hideTimer = window.setTimeout(() => {
-          cursorEl.style.opacity = "0";
-        }, 320);
-        timers.push(hideTimer);
-        return;
-      }
-
-      chars[visible].classList.add("visible");
-      updateCursor(visible);
-
-      const currentChar = HEADING[visible];
-      visible += 1;
-      const delay = currentChar === " " ? 24 : 16 + Math.random() * 24;
-      const timer = window.setTimeout(step, delay);
-      timers.push(timer);
-    };
-
-    const initialTimer = window.setTimeout(step, 950);
-    timers.push(initialTimer);
-
-    const onResize = () => {
-      const activeIndex = Math.max(0, Math.min(visible - 1, chars.length - 1));
-      updateCursor(activeIndex);
-    };
-
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1211,35 +1140,26 @@ export default function LandingHero() {
         </div>
 
         <div className="welcome-section">
-          <div className="logo-container">
-            <div className="logo">
-              <span className="hero-brand-word" aria-label="Agenfic">
-                {AGENFIC_WORDMARK_TEXT}
-              </span>
-            </div>
-          </div>
-
           <div className="header-container">
-            <h1 className="landing-main-header">
-              <span className="typed-container landing-main">
-                <div className="cursor-container" ref={cursorContainerRef}>
-                  <img
-                    src="/assets/blinking-cursor.png"
-                    alt="Agenfic blinking cursor"
-                    className="blinking-cursor"
-                  />
-                </div>
-                <span className="typed-content" ref={typedContentRef} aria-label={HEADING} />
+            <h1 className="landing-main-header" aria-label={HEADING}>
+              <span className="landing-main-line">{HEADING_LINE_ONE}</span>
+              <span className="landing-main-line landing-main-line-secondary">
+                <span>{HEADING_LINE_TWO_PREFIX}</span>
+                <em>{HEADING_LINE_TWO_EMPHASIS}</em>
+                <span aria-hidden="true" className="blinking-cursor landing-main-cursor">
+                  |
+                </span>
               </span>
             </h1>
+            <p className="landing-main-subcopy">{SUPPORTING_COPY}</p>
           </div>
 
           <div className="grid-row welcome-cta">
             <button type="button" className="button button-primary call-to-action">
-              Contact Us
+              Explore use cases
             </button>
             <button type="button" className="button button-secondary call-to-action">
-              Explore use cases
+              Contact Us
             </button>
           </div>
         </div>

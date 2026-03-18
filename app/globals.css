@@ -1032,21 +1032,16 @@ agenfic-logo {
 
 .welcome-section {
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-weight: 450;
   display: flex;
   flex-direction: column;
   overflow-x: clip;
-  padding: var(--space-xl) 0 var(--space-3xl);
+  min-height: 100svh;
+  padding: calc(var(--header-height) + clamp(20px, 5vw, 40px)) 0 var(--space-3xl);
   position: relative;
   text-align: center;
   z-index: 2;
-}
-
-.logo-container {
-  display: flex;
-  width: 100%;
-  justify-content: center;
 }
 
 .logo {
@@ -1063,67 +1058,58 @@ agenfic-logo {
   display: block;
 }
 
-.hero-brand-word {
-  color: var(--theme-surface-on-surface);
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-  font-family: "Avenir Next", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
-  font-size: 22.8px;
-  line-height: 1;
-  letter-spacing: 1.72px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
 .header-container {
-  margin-inline: var(--page-margin);
-  margin-block: 32px 64px;
+  width: 100%;
+  margin: 0 auto 20px;
+  padding-inline: var(--page-margin);
   position: relative;
 }
 
 .landing-main-header {
-  margin: 0;
-  font-size: 5rem;
-  font-weight: 450;
-  line-height: 1.1;
-  max-inline-size: 1200px;
+  margin: 0 auto;
+  max-inline-size: 1120px;
+  font-size: var(--landing-main-text-size);
+  font-weight: 430;
+  line-height: 0.96;
+  letter-spacing: var(--landing-main-text-letter-spacing);
   position: relative;
 }
 
-.typed-container {
-  display: inline-block;
-  position: relative;
+.landing-main-line {
+  display: block;
 }
 
-.typed-content {
-  display: inline-block;
-  position: relative;
+.landing-main-line-secondary {
+  color: var(--theme-surface-on-surface);
 }
 
-.char {
-  display: inline-block;
-  white-space: pre;
-  opacity: 0;
+.landing-main-line-secondary em {
+  font-style: italic;
+  font-weight: 380;
 }
 
-.char.visible {
-  opacity: 1;
-}
-
-.cursor-container {
-  position: absolute;
-  transform: translate3d(var(--cursor-pos-x, 0), var(--cursor-pos-y, 0), 0);
-  pointer-events: none;
-  left: 0;
-  top: 0;
+.landing-main-subcopy {
+  margin: 28px auto 0;
+  max-inline-size: 840px;
+  color: var(--theme-surface-on-surface-variant);
+  font-size: var(--cta-size);
+  line-height: var(--cta-line-height);
+  letter-spacing: var(--cta-letter-spacing);
 }
 
 .blinking-cursor {
+  display: inline-block;
   height: 1em;
   width: auto;
   animation: blink 0.5s infinite;
-  filter: var(--landing-cursor-filter);
+  color: currentColor;
+  line-height: 1;
+}
+
+.landing-main-cursor {
+  margin-inline-start: 0.05em;
+  vertical-align: baseline;
+  transform: translateY(0.02em);
 }
 
 .grid-row {
@@ -1136,7 +1122,7 @@ agenfic-logo {
   gap: 4px;
   align-items: center;
   justify-content: center;
-  margin: 0 var(--page-margin);
+  margin: 8px var(--page-margin) 0;
 }
 
 .button {
@@ -1294,7 +1280,7 @@ agenfic-logo {
   }
 
   .landing-main-header {
-    font-size: 3rem;
+    line-height: 0.98;
   }
 }
 
@@ -1310,7 +1296,7 @@ agenfic-logo {
   }
 
   .header-container {
-    margin-block: 20px 32px;
+    margin-bottom: 16px;
   }
 
   .welcome-cta {
@@ -1325,10 +1311,6 @@ agenfic-logo {
 
   .logo {
     height: 24px;
-  }
-
-  .hero-brand-word {
-    font-size: 22.8px;
   }
 
   .theme-switcher {
