@@ -193,6 +193,9 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
         color: var(--nav-foreground) !important;
         font-family: inherit !important;
       }
+      .nav_logo_wrap {
+        transform: translateX(16px) !important;
+      }
       .nav_logo_wrap,
       .nav_links_link,
       .nav_dropdown_link,

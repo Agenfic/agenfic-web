@@ -1048,7 +1048,7 @@ agenfic-logo {
   flex-direction: column;
   overflow-x: clip;
   min-height: 100svh;
-  padding: calc(var(--header-height) + clamp(20px, 5vw, 40px)) 0 var(--space-3xl);
+  padding: calc(var(--header-height) + clamp(70px, 5vw, 90px)) 0 var(--space-3xl);
   position: relative;
   text-align: center;
   z-index: 2;
@@ -1157,11 +1157,23 @@ agenfic-logo {
 }
 
 .welcome-cta {
+  width: 100%;
   max-width: 100%;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 4px;
   align-items: center;
-  justify-content: center;
-  margin: 8px var(--page-margin) 0;
+  justify-content: unset;
+  margin: 8px 0 0;
+  padding-inline: var(--page-margin);
+}
+
+.welcome-cta > .button:first-child {
+  justify-self: end;
+}
+
+.welcome-cta > .button:last-child {
+  justify-self: start;
 }
 
 .button {
@@ -1371,9 +1383,11 @@ agenfic-logo {
   }
 
   .welcome-cta {
+    display: flex;
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    padding-inline: var(--page-margin);
   }
 
   .button {
