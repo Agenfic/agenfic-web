@@ -3,6 +3,7 @@
 import { createElement, useEffect, useRef, useState } from "react";
 import { NAVIGATION_BANNER_HTML } from "./navigation-banner-template";
 import { createHeroParticles } from "./hero-particles-scene";
+import { getWordmarkSvgMarkup } from "./wordmark-logo";
 
 const HEADING_LINE_ONE = "The AI advantage,";
 const HEADING_LINE_TWO_PREFIX = "finally ";
@@ -10,7 +11,6 @@ const HEADING_LINE_TWO_EMPHASIS = "within reach.";
 const HEADING = `${HEADING_LINE_ONE} ${HEADING_LINE_TWO_PREFIX}${HEADING_LINE_TWO_EMPHASIS}`;
 const SUPPORTING_COPY =
   "Automation, strategy, and custom AI solutions — built to make your business unstoppable.";
-const AGENFIC_WORDMARK_TEXT = "AGENFIC";
 const HOME_THEME_STORAGE_KEY = "agenfic-home-theme";
 const AGENFIC_NAV_CSS_URL =
   "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/css/ant-brand.shared.ac3f37dad.min.css";
@@ -67,10 +67,6 @@ const LANDING_THEME_TOKENS: Record<
     navSolidDivider: "rgba(18, 19, 23, 0.18)"
   }
 };
-
-const getWordmarkSvg = (fill: string) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 143 16" width="143" height="16" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-  <text x="3" y="12.1" fill="${fill}" font-family="'Avenir Next', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif" font-size="15.2" font-weight="700" letter-spacing="1.15">${AGENFIC_WORDMARK_TEXT}</text>
-</svg>`;
 
 export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
   const themeTokens = LANDING_THEME_TOKENS[theme];
@@ -531,7 +527,7 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
 
         const logo = document.querySelector(".nav_logo_lottie");
         if (logo) {
-          logo.innerHTML = ${JSON.stringify(getWordmarkSvg(themeTokens.wordmarkFill))};
+          logo.innerHTML = ${JSON.stringify(getWordmarkSvgMarkup({ fill: themeTokens.wordmarkFill }))};
         }
         normalizeAnchorTargets();
 
