@@ -1265,9 +1265,10 @@ export default function LandingHero() {
             </button>
           </div>
 
-          <InterviewsGlobe />
         </div>
       </section>
+
+      <InterviewsGlobe />
 
       <div className="theme-switcher" role="group" aria-label="Color theme">
         <button
