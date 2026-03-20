@@ -1,0 +1,280 @@
+/* ── 81k Interviews CTA Section ── */
+._81k-interviews-cta_section {
+  padding-top: 120px;
+  position: relative;
+  width: 100%;
+}
+
+._81k-cta_scroll-bg {
+  max-width: 90%;
+  margin: 2rem auto;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  background: #e8e6dc;
+}
+
+._81k-cta_overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+._81k-cta_container {
+  position: relative;
+  z-index: 2;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+._81k-cta_title-wrap {
+  text-align: center;
+  padding: 60px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+._81k-cta_title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 54px;
+  line-height: 1.15;
+  font-weight: 400;
+  color: #141413;
+  opacity: 0;
+  transform: translateY(10%);
+}
+
+._81k-cta_subtitle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #30302e;
+  max-width: 520px;
+  opacity: 0;
+  transform: translateY(10%);
+}
+
+[data-scroll="button"] {
+  opacity: 0;
+  transform: translateY(10%);
+}
+
+._81k-cta_embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1400 / 1000;
+  opacity: 0;
+}
+
+/* ── Viewport ── */
+#viewport {
+  width: 100%;
+  height: 110%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8e6dc;
+  overflow: hidden;
+}
+
+/* ── Globe SVG ── */
+.globe-svg {
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+
+.globe-svg.dragging {
+  cursor: grabbing;
+}
+
+/* ── Quote overlay ── */
+#quote-overlay {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  z-index: 8;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(232, 230, 220, 0.95) 0%,
+    rgba(232, 230, 220, 0.95) 50%,
+    rgba(232, 230, 220, 0) 100%
+  );
+  padding: 24px 28px;
+  border-radius: 4px;
+}
+
+#step-dots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.step-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid rgba(20, 20, 19, 0.3);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.step-dot:hover {
+  background: rgba(20, 20, 19, 0.15);
+}
+
+.step-dot.active {
+  background: rgba(20, 20, 19, 0.3);
+}
+
+#country-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.13px;
+  text-transform: uppercase;
+  color: #141413;
+  margin-bottom: 6px;
+  line-height: 1;
+  text-align: left;
+}
+
+.hl-yellow {
+  display: inline;
+  padding: 0.02em 0.22em 0.08em;
+  border-radius: 4px;
+  color: #141413;
+  background: color-mix(in srgb, #eda100 60%, transparent);
+}
+
+#quote-text {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #141413;
+  min-height: 3em;
+  text-align: left;
+  text-indent: -0.5em;
+  padding-left: 0.5em;
+}
+
+/* ── Typewriter cursor ── */
+.sf-tw-cursor {
+  display: inline-block;
+  width: 1.5px;
+  height: 0.85em;
+  background: currentcolor;
+  margin-left: 1px;
+  vertical-align: -0.1em;
+}
+
+.sf-tw-cursor.sf-blinking {
+  animation: sf-tw-blink 0.9s step-end infinite;
+}
+
+@keyframes sf-tw-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Button styling ── */
+._81k-interviews-cta_section .btn_main_wrap.is-tertiary-fill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #141413;
+  border-radius: 999px;
+  background: transparent;
+  color: #141413;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+}
+
+._81k-interviews-cta_section .btn_main_wrap.is-tertiary-fill:hover {
+  background: #141413;
+  color: #e8e6dc;
+}
+
+._81k-interviews-cta_section .btn_main_text {
+  line-height: 1;
+}
+
+._81k-interviews-cta_section .u-hide-if-empty:empty {
+  display: none;
+}
+
+._81k-interviews-cta_section .g_svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  ._81k-interviews-cta_section {
+    padding-top: 60px;
+  }
+
+  ._81k-cta_scroll-bg {
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  ._81k-cta_title {
+    font-size: 32px;
+  }
+
+  ._81k-cta_subtitle {
+    font-size: 15px;
+  }
+
+  ._81k-cta_title-wrap {
+    padding: 40px 16px 24px;
+  }
+
+  #viewport {
+    top: -28%;
+    left: -35%;
+    width: 170%;
+    height: 170%;
+  }
+
+  #quote-overlay {
+    width: 280px;
+    padding: 16px 20px;
+    top: 60%;
+  }
+
+  #quote-text {
+    font-size: 14px;
+    min-height: 2.5em;
+  }
+
+  #country-label {
+    font-size: 11px;
+  }
+
+  .hl-yellow {
+    border-radius: 2px;
+  }
+}
+
+@media (max-width: 479px) {
+  ._81k-cta_container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+}

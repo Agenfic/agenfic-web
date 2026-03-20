@@ -4,6 +4,8 @@ import { createElement, useEffect, useRef, useState } from "react";
 import { NAVIGATION_BANNER_HTML } from "./navigation-banner-template";
 import { createHeroParticles } from "./hero-particles-scene";
 import { getWordmarkSvgMarkup } from "./wordmark-logo";
+import InterviewsGlobe from "./interviews-globe";
+import "./interviews-globe.css";
 
 const HEADING_LINE_ONE = "The AI advantage,";
 const HEADING_LINE_TWO_PREFIX = "finally ";
@@ -1262,6 +1264,8 @@ export default function LandingHero() {
               Contact Us
             </button>
           </div>
+
+          <InterviewsGlobe />
         </div>
       </section>
 
