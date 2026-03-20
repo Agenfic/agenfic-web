@@ -1,13 +1,15 @@
 /* ── 81k Interviews CTA Section ── */
 ._81k-interviews-cta_section {
-  padding-top: 120px;
+  margin-top: clamp(-440px, -40vh, -280px);
+  padding-top: 24px;
   position: relative;
   width: 100%;
+  z-index: 2;
 }
 
 ._81k-cta_scroll-bg {
   max-width: 90%;
-  margin: 2rem auto;
+  margin: 0 auto 2rem;
   border-radius: 24px;
   overflow: hidden;
   position: relative;
@@ -24,13 +26,13 @@
 ._81k-cta_container {
   position: relative;
   z-index: 2;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 ._81k-cta_title-wrap {
   text-align: center;
-  padding: 60px 24px 40px;
+  padding: 32px 24px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,8 +45,8 @@
   line-height: 1.15;
   font-weight: 400;
   color: #141413;
-  opacity: 0;
-  transform: translateY(10%);
+  opacity: 1;
+  transform: none;
 }
 
 ._81k-cta_subtitle {
@@ -222,10 +224,18 @@
   height: 16px;
 }
 
+@media (max-width: 991px) {
+  ._81k-interviews-cta_section {
+    margin-top: -180px;
+    padding-top: 24px;
+  }
+}
+
 /* ── Mobile ── */
 @media (max-width: 600px) {
   ._81k-interviews-cta_section {
-    padding-top: 60px;
+    margin-top: -56px;
+    padding-top: 32px;
   }
 
   ._81k-cta_scroll-bg {
