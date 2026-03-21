@@ -1154,7 +1154,40 @@ export default function LandingHero() {
       density: isMobileLayout ? 240 : 200
     });
 
+    let isInView = true;
+    let isDocumentVisible = !document.hidden;
+    const syncAnimationState = () => {
+      if (isInView && isDocumentVisible) {
+        controller.resume();
+      } else {
+        controller.pause();
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        isInView = entry?.isIntersecting ?? false;
+        syncAnimationState();
+      },
+      {
+        threshold: 0.05
+      }
+    );
+
+    observer.observe(container);
+
+    const onVisibilityChange = () => {
+      isDocumentVisible = !document.hidden;
+      syncAnimationState();
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    syncAnimationState();
+
     return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       controller.destroy();
     };
   }, [isMobileLayout, theme]);

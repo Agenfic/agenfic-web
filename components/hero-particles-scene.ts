@@ -677,7 +677,6 @@ class HeroParticleScene {
       antialias: true,
       alpha: true,
       powerPreference: "high-performance",
-      preserveDrawingBuffer: true,
       stencil: false,
       precision: "highp"
     });
@@ -779,19 +778,41 @@ export class HeroParticleController {
   }
 
   start(): void {
-    this.scene.resume();
-    this.loop(performance.now());
+    this.resume();
   }
 
-  destroy(): void {
+  resume(): void {
+    if (this.frameId !== null) {
+      this.scene.resume();
+      return;
+    }
+
+    this.scene.resume();
+    this.lastTimestamp = 0;
+    this.frameId = requestAnimationFrame(this.loop);
+  }
+
+  pause(): void {
+    this.scene.stop();
+
     if (this.frameId !== null) {
       cancelAnimationFrame(this.frameId);
       this.frameId = null;
     }
+
+    this.lastTimestamp = 0;
+  }
+
+  destroy(): void {
+    this.pause();
     this.scene.kill();
   }
 
   private loop = (timestamp: number): void => {
+    if (this.frameId === null) {
+      return;
+    }
+
     const delta = this.lastTimestamp === 0 ? 1 / 60 : Math.min(0.05, (timestamp - this.lastTimestamp) / 1000);
     this.lastTimestamp = timestamp;
     this.scene.render(delta);

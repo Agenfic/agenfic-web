@@ -15,6 +15,7 @@ export default function InterviewsGlobe() {
     if (!section) return;
 
     // Load GSAP from CDN (used by original Anthropic code)
+    let destroyGlobe: (() => void) | undefined;
     const gsapScript = document.createElement("script");
     gsapScript.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js";
     gsapScript.onload = () => {
@@ -22,13 +23,15 @@ export default function InterviewsGlobe() {
       stScript.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js";
       stScript.onload = () => {
         initAnimations(section);
-        loadTopojsonThenGlobe(section);
+        destroyGlobe = loadTopojsonThenGlobe(section);
       };
       document.head.appendChild(stScript);
     };
     document.head.appendChild(gsapScript);
 
     return () => {
+      destroyGlobe?.();
+
       // Cleanup ScrollTrigger instances on unmount
       if (typeof window !== "undefined" && (window as any).ScrollTrigger) {
         (window as any).ScrollTrigger.getAll().forEach((st: any) => st.kill());
@@ -350,18 +353,29 @@ function initAnimations(section: HTMLElement) {
 
 /* ── Globe rendering engine ── */
 function loadTopojsonThenGlobe(section: HTMLElement) {
+  let destroyGlobe: (() => void) | undefined;
+  let cancelled = false;
   const topoScript = document.createElement("script");
   topoScript.src =
     "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69bad6d788beb39af77f187c_topojson-client.txt";
   topoScript.onload = () => {
-    initGlobe();
+    if (cancelled) {
+      return;
+    }
+
+    destroyGlobe = initGlobe(section);
   };
   document.head.appendChild(topoScript);
+
+  return () => {
+    cancelled = true;
+    destroyGlobe?.();
+  };
 }
 
-function initGlobe() {
+function initGlobe(section: HTMLElement) {
   const topojson = (window as any).topojson;
-  if (!topojson) return;
+  if (!topojson) return () => {};
 
   // ── Constants ──
   const GLOBE_W = 1400, GLOBE_H = 1000;
@@ -835,6 +849,46 @@ function initGlobe() {
   let lastTypingDone = true, manualJump = false;
   const EASE = 0.06;
   let animReady = false;
+  let isSectionVisible = false;
+  let isDocumentVisible = !document.hidden;
+  let frameId: number | null = null;
+  let destroyed = false;
+
+  const syncLoopState = () => {
+    const shouldRun = animReady && isSectionVisible && isDocumentVisible && !destroyed;
+
+    if (!shouldRun) {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+        frameId = null;
+      }
+      return;
+    }
+
+    if (frameId === null) {
+      frameId = requestAnimationFrame(loop);
+    }
+  };
+
+  const visibilityObserver = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      isSectionVisible = entry?.isIntersecting ?? false;
+      syncLoopState();
+    },
+    {
+      threshold: 0.1
+    }
+  );
+
+  visibilityObserver.observe(section);
+
+  const onVisibilityChange = () => {
+    isDocumentVisible = !document.hidden;
+    syncLoopState();
+  };
+
+  document.addEventListener("visibilitychange", onVisibilityChange);
 
   function jumpToStep(i: number) {
     virtual = i * SF_SCROLL_PER_STEP;
@@ -844,7 +898,11 @@ function initGlobe() {
   }
 
   function loop(ts: number) {
-    if (!animReady) { requestAnimationFrame(loop); return; }
+    if (!animReady || !isSectionVisible || !isDocumentVisible || destroyed) {
+      frameId = null;
+      return;
+    }
+
     if (autoStart === null) { autoStart = ts; autoOffset = virtual; }
 
     const wasManualJump = manualJump;
@@ -913,14 +971,12 @@ function initGlobe() {
     const currentFocusIdx = stepIdx >= 0 ? (focusIndices[STEPS[stepIdx].code] !== undefined ? focusIndices[STEPS[stepIdx].code] : -1) : -1;
     const prevFocusIdxVal = prevStepIdx >= 0 && STEPS[prevStepIdx] ? (focusIndices[STEPS[prevStepIdx].code] !== undefined ? focusIndices[STEPS[prevStepIdx].code] : -1) : -1;
     render(currentFocusIdx, prevFocusIdxVal, curMix);
-    requestAnimationFrame(loop);
+    frameId = requestAnimationFrame(loop);
   }
 
   // ── Data loading ──
   const WORLD_URL = "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69bad657e55cf57c0c2b1c89_countries-110m%202.txt";
   const US_STATES_URL = "https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69bad6578b4b6af7746b9171_states-10m%202.txt";
-
-  requestAnimationFrame(loop);
 
   Promise.all([
     fetch(WORLD_URL).then(r => r.json()),
@@ -1018,5 +1074,22 @@ function initGlobe() {
     curLon = targets[0][0];
     curLat = targets[0][1];
     animReady = true;
+    syncLoopState();
   });
+
+  return () => {
+    destroyed = true;
+    visibilityObserver.disconnect();
+    document.removeEventListener("visibilitychange", onVisibilityChange);
+
+    if (frameId !== null) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+
+    if (twTimer) {
+      clearTimeout(twTimer);
+      twTimer = null;
+    }
+  };
 }
