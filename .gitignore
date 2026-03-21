@@ -16,6 +16,7 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+.claude/
 .next-backup-*/
 .tmp-*.log
 dev_*.txt

@@ -1,61 +1,92 @@
 /* ── 81k Interviews CTA Section ── */
+/* Matches Anthropic homepage "What 81,000 people want from AI" layout */
+
 ._81k-interviews-cta_section {
-  margin-top: clamp(-440px, -40vh, -280px);
-  padding-top: 24px;
+  flex-flow: column;
+  justify-content: center;
+  display: flex;
   position: relative;
-  width: 100%;
-  z-index: 2;
 }
 
 ._81k-cta_scroll-bg {
-  max-width: 90%;
-  margin: 0 auto 2rem;
-  border-radius: 24px;
-  overflow: hidden;
+  max-width: calc(min(89.5rem, 100vw) - clamp(2rem, 1.0816rem + 3.9184vw, 5rem) * 2);
+  margin: clamp(2.5rem, 2.0408rem + 1.9592vw, 4rem) auto;
+  border-radius: 1rem;
+  background-color: #e8e6dc;
+  text-align: center;
+  flex-flow: column;
+  flex: 1 1 0%;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  display: flex;
   position: relative;
-  background: #e8e6dc;
+  overflow: hidden;
 }
 
 ._81k-cta_overlay {
-  position: absolute;
-  inset: 0;
   z-index: 1;
+  background-image: linear-gradient(
+    rgba(232, 230, 220, 0.8),
+    rgba(232, 230, 220, 0.59) 40%,
+    rgba(0, 0, 0, 0)
+  );
+  width: 100%;
+  height: 70%;
+  position: absolute;
+  inset: 0% 0% auto;
   pointer-events: none;
 }
 
 ._81k-cta_container {
+  max-width: calc(min(89.5rem, 100vw) - clamp(2rem, 1.0816rem + 3.9184vw, 5rem) * 2);
+  padding-top: clamp(3.5rem, 2.7347rem + 3.2653vw, 6rem);
+  padding-bottom: clamp(2.5rem, 2.0408rem + 1.9592vw, 4rem);
+  border-radius: 1rem;
+  background-color: #e8e6dc;
+  text-align: center;
+  flex-flow: column;
+  flex: 1 1 0%;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
   position: relative;
-  z-index: 2;
-  margin-top: 1.5rem;
-  margin-bottom: 2.5rem;
+  overflow: hidden;
 }
 
 ._81k-cta_title-wrap {
-  text-align: center;
-  padding: 32px 24px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+  z-index: 1;
+  padding-bottom: 40%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: relative;
 }
 
 ._81k-cta_title {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 54px;
-  line-height: 1.15;
+  font-size: clamp(3.84rem, 0.818rem + 6.29vw, 6rem);
+  line-height: 1.1;
   font-weight: 400;
+  letter-spacing: 0.01666em;
   color: #141413;
-  opacity: 1;
-  transform: none;
+  max-width: 10.65em;
+  margin: 0 auto;
+  margin-bottom: clamp(1.75rem, 1.6735rem + 0.3265vw, 2rem);
+  opacity: 0;
+  transform: translateY(10%);
 }
 
 ._81k-cta_subtitle {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 18px;
-  line-height: 1.5;
+  font-size: 1.25rem;
+  line-height: 1.4;
   font-weight: 400;
-  color: #30302e;
-  max-width: 520px;
+  color: #141413;
+  text-wrap: balance;
+  margin-bottom: 1.5em;
   opacity: 0;
   transform: translateY(10%);
 }
@@ -66,16 +97,17 @@
 }
 
 ._81k-cta_embed {
-  position: relative;
   width: 100%;
-  aspect-ratio: 1400 / 1000;
+  height: 100%;
+  position: absolute;
+  inset: 0%;
   opacity: 0;
 }
 
 /* ── Viewport ── */
 #viewport {
   width: 100%;
-  height: 110%;
+  height: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -199,7 +231,7 @@
   background: transparent;
   color: #141413;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px;
+  font-size: 1.25rem;
   font-weight: 400;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -224,35 +256,25 @@
   height: 16px;
 }
 
-@media (max-width: 991px) {
-  ._81k-interviews-cta_section {
-    margin-top: -180px;
-    padding-top: 24px;
+/* ── Tablet: ≤767px ── */
+@media (max-width: 767px) {
+  ._81k-cta_title-wrap {
+    padding-bottom: 50%;
   }
 }
 
-/* ── Mobile ── */
-@media (max-width: 600px) {
-  ._81k-interviews-cta_section {
-    margin-top: -56px;
-    padding-top: 32px;
-  }
-
-  ._81k-cta_scroll-bg {
-    max-width: 100%;
-    border-radius: 16px;
+/* ── Mobile: ≤479px ── */
+@media (max-width: 479px) {
+  ._81k-cta_container {
+    padding-top: clamp(2.5rem, 2.0408rem + 1.9592vw, 4rem);
   }
 
   ._81k-cta_title {
-    font-size: 32px;
-  }
-
-  ._81k-cta_subtitle {
-    font-size: 15px;
+    font-size: 7vw;
   }
 
   ._81k-cta_title-wrap {
-    padding: 40px 16px 24px;
+    padding-bottom: 100%;
   }
 
   #viewport {
@@ -279,12 +301,5 @@
 
   .hl-yellow {
     border-radius: 2px;
-  }
-}
-
-@media (max-width: 479px) {
-  ._81k-cta_container {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
   }
 }

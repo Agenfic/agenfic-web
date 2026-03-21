@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 
 import { useEffect, useRef } from "react";
 
@@ -75,208 +76,208 @@ export default function InterviewsGlobe() {
               </div>
             </div>
           </div>
-        </div>
-        <div data-scroll="embed" className="_81k-cta_embed">
-          <div id="viewport">
-            <svg
-              id="globe-svg"
-              className="globe-svg"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 1400 1000"
-              preserveAspectRatio="xMidYMid meet"
-            >
-              <defs>
-                <clipPath id="fill-clip">
-                  <circle id="fill-clip-c" cx="700" cy="500" r="559" />
-                </clipPath>
-                <filter
-                  id="glow-blur"
-                  x="-20%"
-                  y="-20%"
-                  width="140%"
-                  height="140%"
-                >
-                  <feGaussianBlur stdDeviation="5" />
-                </filter>
-                <clipPath id="glow-clip">
-                  <path id="glow-clip-path" d="" />
-                </clipPath>
-              </defs>
-              <rect x="0" y="0" width="1400" height="1000" fill="#E8E6DC" />
-              <circle
-                id="disk"
-                cx="700"
-                cy="500"
-                r="560"
-                fill="#E8E6DC"
-                stroke="none"
-              />
-              {/* back-hemisphere grid */}
-              <g fill="none">
-                <path
-                  id="back-grid"
-                  strokeWidth="0.35"
-                  stroke="rgba(20,20,19,0.063)"
-                  d=""
-                />
-              </g>
-              {/* country fills */}
-              <path
-                id="country-fill"
-                fill="none"
-                fillRule="evenodd"
-                stroke="none"
-                clipPath="url(#fill-clip)"
-                style={{ opacity: 0, transition: "opacity 0.6s ease-in" }}
-                d=""
-              />
-              {/* front-hemisphere grid */}
-              <g fill="none">
-                <path
-                  id="front-grid"
-                  strokeWidth="0.4"
-                  stroke="rgba(20,20,19,0.18)"
-                  d=""
-                />
-                <path
-                  id="bold-grid"
-                  strokeWidth="0.5"
-                  stroke="rgba(20,20,19,0.25)"
-                  d=""
-                />
-              </g>
-              {/* country borders */}
-              <path
-                id="countries"
-                fill="none"
-                stroke="rgba(20,20,19,0.22)"
-                strokeWidth="0.45"
-                d=""
-                style={{ opacity: 0, transition: "opacity 0.8s ease-in" }}
-              />
-              {/* US state borders */}
-              <path
-                id="states"
-                fill="none"
-                stroke="rgba(20,20,19,0.12)"
-                strokeWidth="0.3"
-                d=""
-                style={{ opacity: 0, transition: "opacity 0.8s ease-in" }}
-              />
-              {/* hover outline */}
-              <path
-                id="hover-outline"
-                fill="none"
-                stroke="rgba(20,20,19,0.35)"
-                strokeWidth="0.6"
-                d=""
-              />
-              {/* glow */}
-              <g
-                clipPath="url(#glow-clip)"
-                style={{ pointerEvents: "none" }}
+          <div data-scroll="embed" className="_81k-cta_embed">
+            <div id="viewport">
+              <svg
+                id="globe-svg"
+                className="globe-svg"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 1400 1000"
+                preserveAspectRatio="xMidYMid meet"
               >
+                <defs>
+                  <clipPath id="fill-clip">
+                    <circle id="fill-clip-c" cx="700" cy="500" r="559" />
+                  </clipPath>
+                  <filter
+                    id="glow-blur"
+                    x="-20%"
+                    y="-20%"
+                    width="140%"
+                    height="140%"
+                  >
+                    <feGaussianBlur stdDeviation="5" />
+                  </filter>
+                  <clipPath id="glow-clip">
+                    <path id="glow-clip-path" d="" />
+                  </clipPath>
+                </defs>
+                <rect x="0" y="0" width="1400" height="1000" fill="#E8E6DC" />
+                <circle
+                  id="disk"
+                  cx="700"
+                  cy="500"
+                  r="560"
+                  fill="#E8E6DC"
+                  stroke="none"
+                />
+                {/* back-hemisphere grid */}
+                <g fill="none">
+                  <path
+                    id="back-grid"
+                    strokeWidth="0.35"
+                    stroke="rgba(20,20,19,0.063)"
+                    d=""
+                  />
+                </g>
+                {/* country fills */}
                 <path
-                  id="glow"
+                  id="country-fill"
+                  fill="none"
+                  fillRule="evenodd"
+                  stroke="none"
+                  clipPath="url(#fill-clip)"
+                  style={{ opacity: 0, transition: "opacity 0.6s ease-in" }}
+                  d=""
+                />
+                {/* front-hemisphere grid */}
+                <g fill="none">
+                  <path
+                    id="front-grid"
+                    strokeWidth="0.4"
+                    stroke="rgba(20,20,19,0.18)"
+                    d=""
+                  />
+                  <path
+                    id="bold-grid"
+                    strokeWidth="0.5"
+                    stroke="rgba(20,20,19,0.25)"
+                    d=""
+                  />
+                </g>
+                {/* country borders */}
+                <path
+                  id="countries"
+                  fill="none"
+                  stroke="rgba(20,20,19,0.22)"
+                  strokeWidth="0.45"
+                  d=""
+                  style={{ opacity: 0, transition: "opacity 0.8s ease-in" }}
+                />
+                {/* US state borders */}
+                <path
+                  id="states"
+                  fill="none"
+                  stroke="rgba(20,20,19,0.12)"
+                  strokeWidth="0.3"
+                  d=""
+                  style={{ opacity: 0, transition: "opacity 0.8s ease-in" }}
+                />
+                {/* hover outline */}
+                <path
+                  id="hover-outline"
+                  fill="none"
+                  stroke="rgba(20,20,19,0.35)"
+                  strokeWidth="0.6"
+                  d=""
+                />
+                {/* glow */}
+                <g
+                  clipPath="url(#glow-clip)"
+                  style={{ pointerEvents: "none" }}
+                >
+                  <path
+                    id="glow"
+                    fill="none"
+                    stroke="#eda100"
+                    strokeWidth="8"
+                    filter="url(#glow-blur)"
+                    strokeOpacity="0"
+                    d=""
+                  />
+                </g>
+                {/* focus outline */}
+                <path
+                  id="focus-outline"
                   fill="none"
                   stroke="#eda100"
-                  strokeWidth="8"
-                  filter="url(#glow-blur)"
+                  strokeWidth="1.2"
                   strokeOpacity="0"
                   d=""
                 />
-              </g>
-              {/* focus outline */}
-              <path
-                id="focus-outline"
-                fill="none"
-                stroke="#eda100"
-                strokeWidth="1.2"
-                strokeOpacity="0"
-                d=""
-              />
-              {/* dots */}
-              <g
-                fill="none"
-                strokeLinecap="round"
-                style={{ pointerEvents: "none" }}
-              >
-                <path
-                  id="dots-dim"
-                  stroke="rgba(20,20,19,0.28)"
-                  strokeWidth="2.4"
-                  d=""
+                {/* dots */}
+                <g
+                  fill="none"
+                  strokeLinecap="round"
+                  style={{ pointerEvents: "none" }}
+                >
+                  <path
+                    id="dots-dim"
+                    stroke="rgba(20,20,19,0.28)"
+                    strokeWidth="2.4"
+                    d=""
+                  />
+                  <path
+                    id="dots-fade"
+                    stroke="#141413"
+                    strokeWidth="2.4"
+                    strokeOpacity="0"
+                    d=""
+                  />
+                  <path
+                    id="dots-main"
+                    stroke="#141413"
+                    strokeWidth="2.4"
+                    strokeOpacity="0"
+                    d=""
+                  />
+                  <path
+                    id="dots-green"
+                    stroke="#2d8a56"
+                    strokeWidth="2.4"
+                    d=""
+                  />
+                  <path
+                    id="dots-blue"
+                    stroke="#4a72b0"
+                    strokeWidth="2.4"
+                    d=""
+                  />
+                  <path
+                    id="dots-green-pulse"
+                    stroke="#2d8a56"
+                    strokeWidth="4"
+                    strokeOpacity="0"
+                    d=""
+                  />
+                  <path
+                    id="dots-blue-pulse"
+                    stroke="#4a72b0"
+                    strokeWidth="4"
+                    strokeOpacity="0"
+                    d=""
+                  />
+                  <path id="wiper-g" stroke="#2d8a56" strokeWidth="2.4" d="" />
+                  <path id="wiper-b" stroke="#4a72b0" strokeWidth="2.4" d="" />
+                </g>
+                {/* labels */}
+                <g id="labels" />
+                {/* rim circles */}
+                <circle
+                  id="rim-in"
+                  cx="700"
+                  cy="500"
+                  r="560"
+                  fill="none"
+                  stroke="rgba(20,20,19,0.55)"
+                  strokeWidth="0.6"
                 />
-                <path
-                  id="dots-fade"
-                  stroke="#141413"
-                  strokeWidth="2.4"
-                  strokeOpacity="0"
-                  d=""
+                <circle
+                  id="rim-out"
+                  cx="700"
+                  cy="500"
+                  r="566"
+                  fill="none"
+                  stroke="rgba(20,20,19,0.35)"
+                  strokeWidth="0.4"
                 />
-                <path
-                  id="dots-main"
-                  stroke="#141413"
-                  strokeWidth="2.4"
-                  strokeOpacity="0"
-                  d=""
-                />
-                <path
-                  id="dots-green"
-                  stroke="#2d8a56"
-                  strokeWidth="2.4"
-                  d=""
-                />
-                <path
-                  id="dots-blue"
-                  stroke="#4a72b0"
-                  strokeWidth="2.4"
-                  d=""
-                />
-                <path
-                  id="dots-green-pulse"
-                  stroke="#2d8a56"
-                  strokeWidth="4"
-                  strokeOpacity="0"
-                  d=""
-                />
-                <path
-                  id="dots-blue-pulse"
-                  stroke="#4a72b0"
-                  strokeWidth="4"
-                  strokeOpacity="0"
-                  d=""
-                />
-                <path id="wiper-g" stroke="#2d8a56" strokeWidth="2.4" d="" />
-                <path id="wiper-b" stroke="#4a72b0" strokeWidth="2.4" d="" />
-              </g>
-              {/* labels */}
-              <g id="labels" />
-              {/* rim circles */}
-              <circle
-                id="rim-in"
-                cx="700"
-                cy="500"
-                r="560"
-                fill="none"
-                stroke="rgba(20,20,19,0.55)"
-                strokeWidth="0.6"
-              />
-              <circle
-                id="rim-out"
-                cx="700"
-                cy="500"
-                r="566"
-                fill="none"
-                stroke="rgba(20,20,19,0.35)"
-                strokeWidth="0.4"
-              />
-            </svg>
-            {/* Quote overlay */}
-            <div id="quote-overlay">
-              <div id="step-dots" />
-              <div id="country-label" />
-              <div id="quote-text" />
+              </svg>
+              {/* Quote overlay */}
+              <div id="quote-overlay">
+                <div id="step-dots" />
+                <div id="country-label" />
+                <div id="quote-text" />
+              </div>
             </div>
           </div>
         </div>
