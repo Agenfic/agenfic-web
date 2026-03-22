@@ -59,7 +59,7 @@
   display: flex;
   position: relative;
   overflow: hidden;
-  gap: clamp(2rem, 3vw, 3.5rem);
+  gap: 0;
 }
 
 ._81k-cta_title-wrap {
@@ -78,11 +78,16 @@
   font-weight: 400;
   letter-spacing: 0.01666em;
   color: #141413;
-  max-width: 10.65em;
+  max-width: 20em;
   margin: 0 auto;
   margin-bottom: clamp(1.75rem, 1.6735rem + 0.3265vw, 2rem);
   opacity: 0;
   transform: translateY(10%);
+}
+
+._81k-cta_title-nowrap {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 ._81k-cta_subtitle {
@@ -105,6 +110,7 @@
 ._81k-cta_embed {
   width: 100%;
   position: relative;
+  margin-top: clamp(-9rem, -12vw, -6.5rem);
   opacity: 0;
 }
 

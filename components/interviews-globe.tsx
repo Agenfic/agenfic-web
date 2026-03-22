@@ -170,7 +170,11 @@ export default function InterviewsGlobe() {
         <div data-scroll="container" className="_81k-cta_container">
           <div data-scroll="title-wrap" className="_81k-cta_title-wrap">
             <h2 data-scroll="title" className="_81k-cta_title">
-              What 81,000 people want from&nbsp;AI
+              Empowering 6 million
+              <br />
+              <span className="_81k-cta_title-nowrap">
+                Singaporeans through&nbsp;AI
+              </span>
             </h2>
             <p data-scroll="subtitle" className="_81k-cta_subtitle">
               The largest study ever done on AI and how it&apos;s shaping lives
