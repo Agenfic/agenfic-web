@@ -250,7 +250,7 @@ export default function InterviewsGlobe() {
                 <g
                   id="region-borders"
                   fill="none"
-                  stroke="rgba(20,20,19,0.22)"
+                  stroke="rgba(20,20,19,0.55)"
                   strokeWidth="0.45"
                 >
                   {STEP_ORDER.map((region) => (
@@ -313,7 +313,7 @@ export default function InterviewsGlobe() {
                   id="sg-rim"
                   d={MAP_OUTLINE_PATH}
                   fill="none"
-                  stroke="rgba(20,20,19,0.34)"
+                  stroke="rgba(20,20,19,0.7)"
                   strokeWidth="0.6"
                 />
               </svg>
@@ -393,6 +393,33 @@ function initAnimations(section: HTMLElement) {
     .to(embed, { opacity: 1, duration: 2, ease: "power2.out" }, 0.5)
     .to(subtitle, { opacity: 1, y: "0%", duration: 0.9, ease: "power2.out" }, 0.6)
     .to(button, { opacity: 1, y: "0%", duration: 1.3, ease: "power2.out" }, 0.75);
+
+  // ── Animate map viewBox from zoomed-in (120%) to full as user scrolls ──
+  const mapSvg = section.querySelector("#sg-map-svg");
+  if (false && mapSvg) {
+    const vbStartX = MAP_VIEWBOX_WIDTH * 0.0833;
+    const vbStartY = MAP_VIEWBOX_HEIGHT * 0.0833;
+    const vbStartW = MAP_VIEWBOX_WIDTH / 1.2;
+    const vbStartH = MAP_VIEWBOX_HEIGHT / 1.2;
+    const vb = { x: vbStartX, y: vbStartY, w: vbStartW, h: vbStartH };
+
+    gsap.to(vb, {
+      x: 0,
+      y: 0,
+      w: MAP_VIEWBOX_WIDTH,
+      h: MAP_VIEWBOX_HEIGHT,
+      ease: "none",
+      scrollTrigger: {
+        trigger: section,
+        start: "top 30%",
+        end: "bottom 70%",
+        scrub: 0.8,
+      },
+      onUpdate: () => {
+        mapSvg?.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+      },
+    });
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
