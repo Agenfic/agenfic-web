@@ -320,23 +320,45 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
           display: inline-flex !important;
           align-items: center !important;
           justify-content: center !important;
-          min-height: 36px !important;
-          padding: 8px 14px !important;
+          width: 40px !important;
+          min-width: 40px !important;
+          height: 40px !important;
+          min-height: 40px !important;
+          padding: 0 !important;
           border: 0 !important;
           border-radius: 999px !important;
           background: var(--nav-solid-background) !important;
           color: var(--nav-solid-foreground) !important;
-          font-size: 13px !important;
-          line-height: 1 !important;
-          letter-spacing: 0.08px !important;
-          font-weight: 500 !important;
-          text-transform: lowercase !important;
           cursor: pointer !important;
         }
         .mobile-nav-toggle.button.button-compact.button-primary.call-to-action--nav.menu-toggle:hover,
         .mobile-nav-toggle.button.button-compact.button-primary.call-to-action--nav.menu-toggle:focus-visible {
           background: var(--nav-solid-hover) !important;
           outline: none !important;
+        }
+        .mobile-nav-toggle-bar-wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          width: 18px;
+        }
+        .mobile-nav-toggle-bar {
+          display: block;
+          width: 18px;
+          height: 1.5px;
+          border-radius: 999px;
+          background: currentColor;
+          transform-origin: center;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .nav_wrap.mobile-menu-open .mobile-nav-toggle-bar:nth-child(1) {
+          transform: translateY(5.5px) rotate(45deg);
+        }
+        .nav_wrap.mobile-menu-open .mobile-nav-toggle-bar:nth-child(2) {
+          opacity: 0;
+        }
+        .nav_wrap.mobile-menu-open .mobile-nav-toggle-bar:nth-child(3) {
+          transform: translateY(-5.5px) rotate(-45deg);
         }
         .mobile-nav-panel {
           position: absolute;
@@ -355,14 +377,71 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
         .nav_wrap.mobile-menu-open .mobile-nav-panel {
           display: flex;
         }
+        .mobile-nav-group {
+          display: flex;
+          flex-direction: column;
+          border-radius: 12px;
+        }
+        .mobile-nav-group-trigger {
+          width: 100%;
+          border: 0;
+          background: transparent;
+          color: inherit;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          border-radius: 10px;
+          padding: 10px 12px;
+          font: inherit;
+          font-size: 14px;
+          line-height: 1.3;
+          font-weight: 450;
+          text-align: left;
+          cursor: pointer;
+        }
+        .mobile-nav-group-trigger:hover,
+        .mobile-nav-group-trigger:focus-visible {
+          background: var(--nav-panel-hover);
+          outline: none;
+        }
+        .mobile-nav-group.open .mobile-nav-group-trigger {
+          background: var(--nav-panel-hover);
+        }
+        .mobile-nav-group-icon {
+          flex: 0 0 auto;
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid currentColor;
+          border-bottom: 1.5px solid currentColor;
+          transform: rotate(45deg) translateY(-1px);
+          transition: transform 0.2s ease;
+        }
+        .mobile-nav-group.open .mobile-nav-group-icon {
+          transform: rotate(225deg) translate(-1px, -1px);
+        }
+        .mobile-nav-group-panel {
+          display: none;
+          flex-direction: column;
+          gap: 4px;
+          padding: 4px 0 2px;
+        }
+        .mobile-nav-group.open .mobile-nav-group-panel {
+          display: flex;
+        }
         .mobile-nav-link {
           display: block;
           text-decoration: none;
           border-radius: 10px;
-          padding: 9px 10px;
+          padding: 10px 12px;
           font-size: 14px;
           line-height: 1.3;
           font-weight: 450;
+        }
+        .mobile-nav-group-panel .mobile-nav-link {
+          margin-left: 8px;
+          padding-left: 14px;
+          font-size: 13px;
         }
         .mobile-nav-link:hover,
         .mobile-nav-link:focus-visible {
@@ -381,8 +460,10 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
 
       @media (max-width: 767px) {
         .mobile-nav-toggle.button.button-compact.button-primary.call-to-action--nav.menu-toggle {
+          width: 36px !important;
+          min-width: 36px !important;
+          height: 36px !important;
           min-height: 36px !important;
-          padding: 8px 12px !important;
         }
         .nav_logo_lottie {
           height: 18px !important;
@@ -759,6 +840,24 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
         let mobileMenuToggle = document.querySelector(".mobile-nav-toggle");
         let mobileMenuPanel = document.querySelector(".mobile-nav-panel");
 
+        const setMobileMenuSectionsOpen = (nextOpenGroup) => {
+          if (!(mobileMenuPanel instanceof HTMLElement)) {
+            return;
+          }
+          const groups = Array.from(mobileMenuPanel.querySelectorAll(".mobile-nav-group"));
+          groups.forEach((group) => {
+            if (!(group instanceof HTMLElement)) {
+              return;
+            }
+            const open = group === nextOpenGroup;
+            group.classList.toggle("open", open);
+            const trigger = group.querySelector(".mobile-nav-group-trigger");
+            if (trigger instanceof HTMLElement) {
+              trigger.setAttribute("aria-expanded", open ? "true" : "false");
+            }
+          });
+        };
+
         const setMobileMenuOpen = (open) => {
           if (!(navRoot instanceof HTMLElement) || !(mobileMenuToggle instanceof HTMLElement) || !(mobileMenuPanel instanceof HTMLElement)) {
             return;
@@ -766,11 +865,138 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
           navRoot.classList.toggle("mobile-menu-open", open);
           mobileMenuPanel.classList.toggle("open", open);
           mobileMenuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+          mobileMenuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+          if (!open) {
+            setMobileMenuSectionsOpen(null);
+          }
           requestAnimationFrame(syncFrameHeight);
         };
 
         const closeMobileMenu = () => {
           setMobileMenuOpen(false);
+        };
+
+        const createMobileLink = ({ label, href, target, cta = false }) => {
+          const link = document.createElement("a");
+          link.className = cta ? "mobile-nav-link is-cta" : "mobile-nav-link";
+          link.href = href;
+          link.textContent = label;
+          if (target) {
+            link.setAttribute("target", target);
+          }
+          return link;
+        };
+
+        const getDropdownItemLabel = (link) =>
+          link.querySelector(".nav_dropdown_text")?.textContent?.trim() ??
+          link.textContent?.trim() ??
+          "";
+
+        const buildMobileMenu = () => {
+          if (!(mobileMenuPanel instanceof HTMLElement) || !(desktopNavList instanceof HTMLElement)) {
+            return;
+          }
+
+          mobileMenuPanel.replaceChildren();
+          const navItems = Array.from(desktopNavList.querySelectorAll(":scope > .nav_links_item.is-desktop"));
+
+          navItems.forEach((item) => {
+            if (!(item instanceof HTMLElement) || item.querySelector(":scope > .nav_btn_combo_wrap")) {
+              return;
+            }
+
+            const topLevelLink = item.querySelector(":scope > a.nav_links_link[href]");
+            if (topLevelLink instanceof HTMLAnchorElement) {
+              const label =
+                topLevelLink.querySelector(".nav_links_text.is-desktop")?.textContent?.trim() ??
+                topLevelLink.textContent?.trim() ??
+                "";
+              if (!label) {
+                return;
+              }
+              mobileMenuPanel.appendChild(
+                createMobileLink({
+                  label,
+                  href: topLevelLink.getAttribute("href") ?? UNDER_CONSTRUCTION_ROUTE,
+                  target: topLevelLink.getAttribute("target") ?? "_top"
+                })
+              );
+              return;
+            }
+
+            const dropdown = item.querySelector(":scope > .nav_dropdown_component.w-dropdown");
+            if (!(dropdown instanceof HTMLElement)) {
+              return;
+            }
+
+            const label =
+              dropdown.querySelector(".w-dropdown-toggle .nav_links_text.is-desktop")?.textContent?.trim() ?? "";
+            const sourceLinks = Array.from(dropdown.querySelectorAll(".w-dropdown-list .nav_dropdown_link[href]")).filter(
+              (link) => link instanceof HTMLAnchorElement && getDropdownItemLabel(link)
+            );
+
+            if (!label || sourceLinks.length === 0) {
+              return;
+            }
+
+            const group = document.createElement("div");
+            group.className = "mobile-nav-group";
+
+            const trigger = document.createElement("button");
+            trigger.type = "button";
+            trigger.className = "mobile-nav-group-trigger";
+            trigger.setAttribute("aria-expanded", "false");
+
+            const triggerLabel = document.createElement("span");
+            triggerLabel.className = "mobile-nav-group-label";
+            triggerLabel.textContent = label;
+
+            const triggerIcon = document.createElement("span");
+            triggerIcon.className = "mobile-nav-group-icon";
+            triggerIcon.setAttribute("aria-hidden", "true");
+
+            trigger.append(triggerLabel, triggerIcon);
+
+            const panel = document.createElement("div");
+            panel.className = "mobile-nav-group-panel";
+
+            sourceLinks.forEach((sourceLink) => {
+              if (!(sourceLink instanceof HTMLAnchorElement)) {
+                return;
+              }
+              const itemLabel = getDropdownItemLabel(sourceLink);
+              if (!itemLabel) {
+                return;
+              }
+              panel.appendChild(
+                createMobileLink({
+                  label: itemLabel,
+                  href: sourceLink.getAttribute("href") ?? UNDER_CONSTRUCTION_ROUTE,
+                  target: sourceLink.getAttribute("target") ?? "_top"
+                })
+              );
+            });
+
+            trigger.addEventListener("click", () => {
+              const nextOpen = !group.classList.contains("open");
+              setMobileMenuSectionsOpen(nextOpen ? group : null);
+              requestAnimationFrame(syncFrameHeight);
+            });
+
+            group.append(trigger, panel);
+            mobileMenuPanel.appendChild(group);
+          });
+
+          mobileMenuPanel.appendChild(
+            createMobileLink({
+              label: "Contact Us",
+              href: UNDER_CONSTRUCTION_ROUTE,
+              target: "_top",
+              cta: true
+            })
+          );
+
+          normalizeAnchorTargets(mobileMenuPanel);
         };
 
         if (navRoot instanceof HTMLElement && navActionsWrap instanceof HTMLElement) {
@@ -781,31 +1007,37 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
               "button button-compact button-primary call-to-action--nav menu-toggle mobile-nav-toggle";
             mobileMenuToggle.setAttribute("aria-haspopup", "false");
             mobileMenuToggle.setAttribute("aria-expanded", "false");
-            mobileMenuToggle.textContent = "menu";
+            mobileMenuToggle.setAttribute("aria-label", "Open menu");
+            const barWrap = document.createElement("span");
+            barWrap.className = "mobile-nav-toggle-bar-wrap";
+            barWrap.setAttribute("aria-hidden", "true");
+            for (let index = 0; index < 3; index += 1) {
+              const bar = document.createElement("span");
+              bar.className = "mobile-nav-toggle-bar";
+              barWrap.appendChild(bar);
+            }
+            mobileMenuToggle.appendChild(barWrap);
             navActionsWrap.appendChild(mobileMenuToggle);
+          } else if (!mobileMenuToggle.querySelector(".mobile-nav-toggle-bar-wrap")) {
+            mobileMenuToggle.textContent = "";
+            const barWrap = document.createElement("span");
+            barWrap.className = "mobile-nav-toggle-bar-wrap";
+            barWrap.setAttribute("aria-hidden", "true");
+            for (let index = 0; index < 3; index += 1) {
+              const bar = document.createElement("span");
+              bar.className = "mobile-nav-toggle-bar";
+              barWrap.appendChild(bar);
+            }
+            mobileMenuToggle.appendChild(barWrap);
           }
 
           if (!(mobileMenuPanel instanceof HTMLElement)) {
             mobileMenuPanel = document.createElement("div");
             mobileMenuPanel.className = "mobile-nav-panel";
-
-            [
-              { label: "Products", href: "#" },
-              { label: "Services", href: "#" },
-              { label: "About Us", href: "#" },
-              { label: "Contact Us", href: "#", cta: true }
-            ].forEach((entry) => {
-              const link = document.createElement("a");
-              link.className = entry.cta ? "mobile-nav-link is-cta" : "mobile-nav-link";
-              link.href = entry.href;
-              link.textContent = entry.label;
-              link.addEventListener("click", () => closeMobileMenu());
-              mobileMenuPanel.appendChild(link);
-            });
-
             navRoot.appendChild(mobileMenuPanel);
-            normalizeAnchorTargets(mobileMenuPanel);
           }
+
+          buildMobileMenu();
 
           mobileMenuToggle.addEventListener("click", () => {
             const open = mobileMenuToggle.getAttribute("aria-expanded") === "true";
@@ -995,13 +1227,6 @@ export const getNavigationBannerIframeHtml = (theme: LandingTheme) => {
           (event) => {
             const link = getNavigationAnchor(event.target);
             if (!(link instanceof HTMLAnchorElement)) {
-              return;
-            }
-
-            if (link.classList.contains("mobile-nav-link")) {
-              event.preventDefault();
-              closeAllWithSync();
-              closeMobileMenu();
               return;
             }
 
